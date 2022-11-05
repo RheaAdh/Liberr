@@ -11,7 +11,7 @@ router.post(
     '/',
     [
         check('email', 'Please enter a valid email address.').isEmail(),
-        check('password', 'Incorrect Password').isLength({ min: 8 }),
+        check('password', 'Incorrect Password'),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -43,7 +43,7 @@ router.post(
                 password: undefined,
             };
 
-            const token = jwt.sign(payload, process.env.JWT_SECRET, {
+            const token = jwt.sign(payload, "21h3ge2hei", {
                 expiresIn: '720h',
             });
 

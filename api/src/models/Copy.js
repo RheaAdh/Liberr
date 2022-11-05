@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const copySchema = new mongoose.Schema(
     {
-        //_id:isbn
+        _id:{//isbn
+            type:String,
+            unique:true
+        },
         presentOwner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
@@ -15,22 +18,24 @@ const copySchema = new mongoose.Schema(
         },
         isBorrowed: {
             type: Boolean,
-            default: 'false',
+            default: false,
         },
         isLost: {
             type: Boolean,
-            default: 'false',
+            default: false,
         },
         readingStatus: {
             isCompleted: {
                 type: Boolean,
-                default: 'false',
+                default: false,
             },
             dueDate: {
                 type: Date,
             },
         },
     },
-    { timestamps: true }
+    { timestamps: true,
+        _id:false 
+    }
 );
-module.exports = Copy = mongoose.model('Copy', copySchema);
+module.exports  = mongoose.model('Copy', copySchema);
