@@ -9,6 +9,7 @@ import Tracking from './Tracking';
 import Subscription from './Subscription';
 import Profile from './Profile';
 import Shelf from './Shelf';
+import WithGradientPage from './WithGradientPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +18,7 @@ export default function Home() {
     <Styled.container>
       {/* <Loading /> */}
       <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName={"Books"} tabBar={props => <TabBar {...props} />}>
-        <Tab.Screen name="Tracking" component={Tracking} />
+        <Tab.Screen name="Tracking" component={WithGradientPage} />
         <Tab.Screen name="Subscription" component={Subscription} />
         <Tab.Screen name="Books" component={Books} />
         <Tab.Screen name="Shelf" component={Shelf} />
