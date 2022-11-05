@@ -20,7 +20,7 @@ export async function editAddress(req, res) {
         user.address = address;
         user.save();
         return res.send({
-            success: false,
+            success: true,
             msg: 'Updated address',
         });
     } catch (err) {

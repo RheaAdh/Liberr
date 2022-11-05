@@ -15,7 +15,12 @@ const donateRoute = require('./routes/donate');
 const gloalRoute = require('./routes/global');
 const bookRoute = require('./routes/book');
 
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: true }));
+app.use(
+    cors({
+        credentials: true,
+    })
+);
 app.use(express.json({ extended: false }));
 app.use('/api', router);
 app.use('*', notFoundHandler);
