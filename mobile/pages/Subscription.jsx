@@ -10,7 +10,7 @@ import { heightInPercent } from '../utils/utilities'
 import WithGradientPage from './WithGradientPage';
 
 
- function Subscription() {
+ export default function Subscription() {
   const refRBSheet = useRef();
 
   const [data, setData] = useState([
@@ -112,6 +112,7 @@ import WithGradientPage from './WithGradientPage';
 
 
   return (
+    <WithGradientPage>
     <Styled.container>
       <RBSheet
           ref={refRBSheet}
@@ -148,6 +149,7 @@ import WithGradientPage from './WithGradientPage';
       </TouchableWithoutFeedback>
       )}
     </Styled.container>
+    </WithGradientPage>
   );
 }
 
@@ -203,5 +205,3 @@ const Styled = {
     font-size: 17;
   `,
 };
-
-export default <WithGradientPage><Subscription/></WithGradientPage>

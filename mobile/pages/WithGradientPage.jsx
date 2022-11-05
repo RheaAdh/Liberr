@@ -1,9 +1,12 @@
 import styled from 'styled-components/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import curve from "./../assets/curve.svg";
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
+import RBSheet from "react-native-raw-bottom-sheet";
+import { heightInPercent } from '../utils/utilities'
 
 export default function WithGradientPage(props) {
+	const refRBSheet = useRef();
 
 	const [welcome, setWelcome] = useState("");
 
@@ -17,6 +20,19 @@ export default function WithGradientPage(props) {
 
 	return (
 		<Styled.container>
+		<RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          height={heightInPercent(65)}
+          customStyles={{
+            container: {
+              borderRadius: 12,
+            },
+            draggableIcon: {
+              backgroundColor: "#BDC6EC",
+            },
+          }}
+        ></RBSheet>
 			<Styled.curve source={curve}></Styled.curve>
 			<Styled.header>
 				<Styled.wish>

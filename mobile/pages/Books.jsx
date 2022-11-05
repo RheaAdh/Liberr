@@ -15,10 +15,10 @@ export default function Books() {
 						id: '1',
 						name: 'Michael Scott',
 					},
-					// {
-					// 	id: '2',
-					// 	name: 'Michael Scott',
-					// }
+					{
+						id: '2',
+						name: 'Michael Scott',
+					}
 				]}
 					keyExtractor={(item) => item.id}
 					renderItem={({item}) => <BookTile  />
@@ -35,6 +35,7 @@ const Styled = {
 	padding-top: 100px;
   `,
   list: styled.FlatList`
-	padding: 10px
+	padding: 10px;
+	height: 700px;
   `
 };
