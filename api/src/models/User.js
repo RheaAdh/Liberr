@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema(
                 type: String,
             },
         },
+        subscribedNumberOfMonths: {
+            type: Number,
+            default: 0,
+        },
         subscriptionType: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Subscription',
@@ -51,19 +55,19 @@ const userSchema = new mongoose.Schema(
         },
         borrowed: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: 'Copy',
             },
         ],
         toLend: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: 'Copy',
             },
         ],
         donated: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: 'Copy',
             },
         ],

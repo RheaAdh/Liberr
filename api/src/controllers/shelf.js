@@ -42,6 +42,41 @@ export const placeOrder = route(async (req, res) => {
     console.log('====================================');
     console.log(copies);
     console.log('====================================');
-
+    //TODO:copy isordered true based on condition and distance
     return res.send({ success: true, data: copies });
+});
+
+export const getBorrowed = route(async (req, res) => {
+    // don't forget to wrap function in route()
+
+    const user = await User.findOne({ email: req.user.email }).populate(
+        'borrowed'
+    );
+
+    return res.send({ success: true, data: user });
+});
+
+export const getToLend = route(async (req, res) => {
+    // don't forget to wrap function in route()
+
+    const user = await User.findOne({ email: req.user.email }).populate(
+        'toLend'
+    );
+
+    return res.send({ success: true, data: user });
+});
+
+export const markAsRead = route(async (req, res) => {
+    // don't forget to wrap function in route()
+    const copy = await Copy.findById(req.body.copyId);
+    copy.readingStatus.isCompleted = true;
+    copy.readingStatus.dueDate = null;
+    copy.isOrdered = false;
+    await copy.save();
+    const user = await User.findOne({ email: req.user.email });
+    user.toLend.push(copy._id);
+    await user.save();
+    user.borrowed.remove(copy._id);
+    await user.save();
+    return res.send({ success: true, data: user });
 });
