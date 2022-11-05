@@ -85,6 +85,7 @@ userSchema.index({ location: '2dsphere' });
 
 //GeoCoder create Location
 userSchema.pre('save', async function (next) {
+    if (!this.address) return;
     const loc = await geocoder.geocode(this.address);
     // console.log(loc)
     this.location = {
