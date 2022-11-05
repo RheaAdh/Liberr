@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema(
             ref: 'User',
         },
         isbn: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: "String",
             ref: 'Copy',
         },
         arrivalDate: {
@@ -26,6 +26,7 @@ const orderSchema = new mongoose.Schema(
                 'DELIVERED_TO_BORROWER',
                 'CANCEL_BORROW',
             ],
+            default:'REQUESTED_FOR_BORROW'
         },
     },
     { timestamps: true }
