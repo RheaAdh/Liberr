@@ -3,7 +3,6 @@ var router = express.Router();
 const globalController = require('../controllers/global');
 const isLoggedIn = require('../middleware/isLoggedIn');
 
-router.get("/mySubscription",isLoggedIn,globalController.mySubscription);
-router.post("/createBook",globalController.createBook);
+router.put("/receivedBook",globalController.receivedBook);
 
 module.exports = router;

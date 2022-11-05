@@ -11,6 +11,10 @@ const copySchema = new mongoose.Schema(
             type: String,
             enum: ['VERY GOOD', 'GOOD', 'BAD', 'VERY_BAD'],
         },
+        imageLink:{
+            type:String,
+            default:""
+        },
         presentOwner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
