@@ -17,6 +17,10 @@ const copySchema = new mongoose.Schema(
         publisher: {
             type: String,
         },
+        isOrdered:{
+            type:Boolean,
+            default: false
+        },
         isBorrowed: {
             type: Boolean,
             default: false,
