@@ -1,11 +1,14 @@
 import HomeStack from './home.stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AuthStack from './auth.stack';
+import { useAuth } from '../context/AuthProvider';
 
 export default function Router() {
+  const auth = useAuth()
+
   return (
     <SafeAreaProvider>
-      <AuthStack />
+      {auth.user ? <HomeStack /> : <AuthStack />}
     </SafeAreaProvider>
   );
 }

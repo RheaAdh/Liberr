@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import { validateEmail } from '../utils/utilities';
 import api from '../utils/api.service';
 import Loading from '../components/Loading';
+import { useAuth } from '../context/AuthProvider';
  
 
 export default function Register({navigation}) {
@@ -16,6 +17,7 @@ export default function Register({navigation}) {
   const password = useInputState()
   const confirmPassword = useInputState()
   const [loading, setLoading] = useState(false)
+  const auth = useAuth()
 
   const handleSubmit = async () => {
     if (!name.value || !email.value || !password.value || !confirmPassword.value){
@@ -48,7 +50,9 @@ export default function Register({navigation}) {
         })
         setLoading(false);
         navigation.navigate('AddressForm', {
-            fromRegister:true
+            fromRegister:true,
+            email: email.value,
+            password: password.value
         })
     }
     catch(err){
@@ -70,8 +74,8 @@ export default function Register({navigation}) {
         <Styled.heading>Join the community!</Styled.heading>
         <Styled.input {...name.props} placeholder="Full Name" placeholderTextColor="#636363" />
         <Styled.input {...email.props} placeholder="Email" placeholderTextColor="#636363" />
-        <Styled.input {...password.props} placeholder="Password" placeholderTextColor="#636363" />
-        <Styled.input {...confirmPassword.props} placeholder="Confirm Password" placeholderTextColor="#636363" />
+        <Styled.input secureTextEntry={true} {...password.props} placeholder="Password" placeholderTextColor="#636363" />
+        <Styled.input secureTextEntry={true} {...confirmPassword.props} placeholder="Confirm Password" placeholderTextColor="#636363" />
       </Styled.form>
       <Button text='Continue' onPress={handleSubmit}/>
     </Styled.container>

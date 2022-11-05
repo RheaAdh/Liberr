@@ -8,7 +8,7 @@ const isLoggedIn = require('../middleware/isLoggedIn');
 
 //Auth user and get token
 router.post(
-  '/',
+  '/login',
   [
     check('email', 'Please enter a valid email address.').isEmail(),
     check('password', 'Incorrect Password').isLength({ min: 8 }),
@@ -16,7 +16,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() });
+      return res.status(400).json({ error: JSON.stringify(errors.array()) });
     }
 
     const { email, password } = req.body;
@@ -25,16 +25,12 @@ router.post(
       let user = await User.findOne({ email }).lean();
 
       if (!user) {
-        return res
-          .status(400)
-          .json({ success: false, msg: 'User is not registered.' });
+        return res.status(400).json({ error: 'User does not exist' });
       }
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({ success: false, msg: 'Incorrect Password' });
+        return res.status(400).json({ error: 'Incorrect Password' });
       }
 
       const payload = {
@@ -47,7 +43,7 @@ router.post(
       res.json(token);
     } catch (err) {
       console.log(`Error : ${err.message}`);
-      res.status(500).json({ success: false, msg: 'Server Error' });
+      res.status(500).json({ error: 'Server Error' });
     }
   }
 );
