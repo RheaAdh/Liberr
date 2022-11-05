@@ -2,9 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './routes';
+const connectDB = require('./config/db');
 import { errorHandler, notFoundHandler } from './utils/utilities';
 
 dotenv.config({ path: '../.env' });
+
+connectDB();
 
 const app = express();
 

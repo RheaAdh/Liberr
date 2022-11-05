@@ -83,7 +83,7 @@ const userSchema = new mongoose.Schema(
             blocked: {
                 isBlocked: {
                     type: Boolean,
-                    blockedDate: DataCue,
+                    blockedDate: Date,
                     reason: {
                         type: String,
                         enum: ['BOOK_LOST', 'BOOK_NOT_DONATED', 'OTHER'],
@@ -94,4 +94,4 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
-module.exports = User = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
