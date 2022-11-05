@@ -25,6 +25,7 @@ router.post(
 
         try {
             let user = await User.findOne({ email }).lean();
+
             if (!user) {
                 return res
                     .status(400)
@@ -42,11 +43,9 @@ router.post(
                 ...user,
                 password: undefined,
             };
-
-            const token = jwt.sign(payload, process.env.JWT_SECRET, {
+            const token = jwt.sign(payload, 'siaogboawpgbe', {
                 expiresIn: '720h',
             });
-
             res.json(token);
         } catch (err) {
             console.log(`Error : ${err.message}`);

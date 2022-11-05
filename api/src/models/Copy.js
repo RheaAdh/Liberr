@@ -33,4 +33,4 @@ const copySchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
-module.exports = Copy = mongoose.model('Copy', copySchema);
+module.exports = mongoose.model('Copy', copySchema);
