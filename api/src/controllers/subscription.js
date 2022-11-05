@@ -42,8 +42,9 @@ export const choosePlan = route(async (req, res) => {
                 user.subscriptionEndDate,
         });
     }
-    const { subscriptionId } = req.body;
+    const { subscriptionId, numberOfMonths } = req.body;
     user.subscriptionType = subscriptionId;
+    user.subscribedNumberOfMonths = numberOfMonths;
     user.subscriptionEndDate = moment().add(30, 'days').calendar();
     console.log('====================================');
     console.log(moment().add(30, 'days').calendar());
