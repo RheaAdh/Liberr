@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Badge from './Badge';
 import BookMetaData from './BookMetaData';
 import getLiberr from './../assets/getLiberr.png';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export default function BookTile({
 	isBooksPage=false, 
@@ -12,7 +13,8 @@ export default function BookTile({
 	authors, 
 	imageLink, 
 	genre,
-	copies
+	copies,
+	placeOrder
 }) {
 	return (
 		<Styled.container>
@@ -30,6 +32,7 @@ export default function BookTile({
 						<BookMetaData dataKey={"BIND"} value={copies[0].isPaperBack ? "Paperback Edition" : "Hardcover Edition"}/>
 						<BookMetaData dataKey={"ISBN"} value={copies[0]._id}/>
 					</Styled.data>
+					<TouchableWithoutFeedback onPress={placeOrder}>
 					<Styled.get>
 						<div style={{ 
 							display: 'flex', 
@@ -44,6 +47,7 @@ export default function BookTile({
 							<p style={{margin: 0, fontSize: "0.7rem", marginTop: '1px', color: '#810CDD'}}>GET</p>
 						</div>
 					</Styled.get>
+					</TouchableWithoutFeedback>
 				</Styled.meta>
 			</Styled.bookInfo>
 		</Styled.container>

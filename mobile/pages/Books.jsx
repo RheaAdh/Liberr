@@ -7,12 +7,14 @@ import { useState, useEffect } from 'react';
 import api from '../utils/api.service';
 import Toast from 'react-native-toast-message';
 import useInputState from '../hooks/useInputState';
+import { useAuth } from '../context/AuthProvider';
 
 export default function Books({navigation}) {
   
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const search = useInputState()
+  const auth = useAuth()
 
   useEffect(async () => {
 	async function fetchData () {
@@ -40,6 +42,28 @@ export default function Books({navigation}) {
 	return searchTerm.toLowerCase().includes(search.value.toLowerCase())
 })
 
+const handleOrderBook = async (id)=>{
+	try {
+		const res = await api.post('/shelf/placeOrder', {
+			bookId: id
+		}, {
+			'x-auth-token': auth.token
+		})
+		console.log(res);
+		Toast.show({
+			type: 'success',
+			text1: 'Book order placed!',
+		});
+	}
+	catch(err){
+		console.log(err);
+		Toast.show({
+			type: 'error',
+			text1: 'Something went wrong',
+		});
+	}
+}
+
 //   if (books.length === 0) return <Loading />
   return (
 	<WithGradientPage navigation={{navigation}}>
@@ -48,7 +72,7 @@ export default function Books({navigation}) {
 			{getFilteredBooks().length ? <Styled.list>
 			{
 				getFilteredBooks().map((item) => {
-					return <BookTile {...item} isBooksPage={true} />
+					return <BookTile placeOrder={()=>handleOrderBook(item._id)} {...item} isBooksPage={true} />
 				})
 			}
 			</Styled.list>: 
