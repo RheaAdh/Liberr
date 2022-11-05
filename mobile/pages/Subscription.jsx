@@ -215,6 +215,7 @@ const Styled = {
       font-size: 14;
       flex-direction: row;
       align-items: center;
+      /* margin: 5px 0; */
     `,
     tick: styled.Image`
       width: 10px;

@@ -20,6 +20,8 @@ export default function WithGradientPage(props) {
 
 	const [welcome, setWelcome] = useState("");
 	const auth = useAuth()
+	const user = auth.user
+
 
 	const handleSubmit = async ()=>{
 		try {
@@ -67,7 +69,6 @@ export default function WithGradientPage(props) {
               backgroundColor: "#BDC6EC",
             },
           }}
-<<<<<<< HEAD
         >
 			<Styled.addBookModal>
 			<Styled.addBookTop>
@@ -97,17 +98,6 @@ export default function WithGradientPage(props) {
 		</Styled.addBookBottom>
 </Styled.addBookModal>
 		</RBSheet>
-			<Styled.curve source={curve}></Styled.curve>
-			<Styled.header>
-				<Styled.wish>
-					<p style={{margin: 0}}>GOOD</p>
-					<h1 style={{margin: '-5px 0px'}}>{welcome.toUpperCase()}</h1>
-				</Styled.wish>
-				<TouchableOpacity onPress={()=>refRBSheet.current.open()}>
-				<Styled.addBook>Add Book</Styled.addBook>
-				</TouchableOpacity>
-=======
-        ></RBSheet>
 			{
 				props.isProfile 
 				?
@@ -131,8 +121,7 @@ export default function WithGradientPage(props) {
 						<h1 style={{margin: '-5px 0px'}}>{welcome.toUpperCase()}</h1>
 					</Styled.wish>
 				}
-				{(user.subscriptionType && user.subscriptionType !== null) && <Styled.addBook>Add Book</Styled.addBook>}
->>>>>>> 10faf52835bf77b52a8d23809e443d493a7ba5a1
+				{!props?.isProfile && <Styled.addBook>Add Book</Styled.addBook>}
 			</Styled.header>
 			{props.children}
 		</Styled.container>
