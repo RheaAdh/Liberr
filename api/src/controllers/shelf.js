@@ -8,6 +8,8 @@ import getDistance from 'geolib/es/getDistance';
 import Subscription from '../models/Subscription';
 
 export const placeOrder = route(async (req, res) => {
+    //TODO: chk if already placed order for copyid
+
     const user = await User.findOne({ email: req.user.email });
     if (user.blocked.isBlocked) {
         return res.send({
@@ -22,7 +24,7 @@ export const placeOrder = route(async (req, res) => {
     }
 
     //chk duedate of subs before place order
-    if (Date.now() > dueDate) {
+    if (Date.now() > user.subscriptionEndDate) {
         return res
             .status(400)
             .json({ error: 'Please renew your  existing subscription' });
@@ -56,7 +58,8 @@ export const placeOrder = route(async (req, res) => {
     var copies = copiesArr.filter((copy) => {
         return copy.condition == bookCondition;
     });
-
+    if (copies.length == 0)
+        return res.status(400).json({ error: 'No Book with such requirement' });
     let closestCopyId = copies[0]._id;
     var x = getDistance(
         {
@@ -107,11 +110,12 @@ export const placeOrder = route(async (req, res) => {
     //     },
     // });
     //add copy to orders
-    const order = new Order();
-    order.fromUser = copy.presentOwner._id;
-    order.toUser = user._id;
-    order.isbn = copy._id;
-    order.deliveryStatus = 'REQUESTED_FOR_BORROW';
+    const order = await Order.create({
+        fromUser: copy.presentOwner._id,
+        toUser: user._id,
+        isbn: copy._id,
+        deliveryStatus: 'REQUESTED_FOR_BORROW',
+    });
 
     user.orders.push(order._id);
     await user.save();
