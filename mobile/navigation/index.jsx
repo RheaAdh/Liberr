@@ -5,7 +5,8 @@ import AuthStack from './auth.stack';
 export default function Router() {
   return (
     <SafeAreaProvider>
-      <AuthStack />
+      {/* <AuthStack /> */}
+      <HomeStack />
     </SafeAreaProvider>
   );
 }
