@@ -6,6 +6,10 @@ const copySchema = new mongoose.Schema(
             type:String,
             unique:true
         },
+        imageLink:{
+            type:String,
+            default:""
+        },
         presentOwner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
