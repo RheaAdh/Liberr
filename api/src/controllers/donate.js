@@ -6,8 +6,9 @@ exports.donateBook = async(req,res)=>{
     try{
         console.log(req.body.isbn);
         const bookdata = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${req.body.isbn}`);
-        // console.log(bookdata.data.items[0].volumeInfo)
-        if(bookdata){
+        console.log(bookdata)
+        
+        if(bookdata.data.totalItems!=0){
             const bookExists = await Book.exists({name:bookdata.data.items[0].volumeInfo.title});
             // console.log(bookExists)
             const bookCopy = await Copy.create({
