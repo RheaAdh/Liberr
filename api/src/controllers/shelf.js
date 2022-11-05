@@ -121,6 +121,7 @@ export const placeOrder = route(async (req, res) => {
     order.fromUser = copy.presentOwner._id;
     order.toUser = user._id;
     order.isbn = copy._id;
+    order.deliveryStatus = 'REQUESTED_FOR_BORROW';
 
     user.orders.push(order._id);
     await user.save();
@@ -134,14 +135,20 @@ export const placeOrder = route(async (req, res) => {
 export const getBorrowed = route(async (req, res) => {
     // don't forget to wrap function in route()
 
-    const user = await User.findOne({ email: req.user.email }).populate({
-        path: 'borrowed',
-        model: 'Copy',
-        populate: {
-            path: 'bookId',
-            model: 'Book',
-        },
-    });
+    const user = await User.findOne({ email: req.user.email })
+        .populate('borrowed')
+        .populate({
+            path: 'borrowed',
+            model: 'Copy',
+            populate: {
+                path: 'bookId',
+                model: 'Book',
+                populate: {
+                    path: 'copies',
+                    model: 'Copy',
+                },
+            },
+        });
 
     return res.send({ success: true, data: user });
 });
@@ -155,6 +162,10 @@ export const getToLend = route(async (req, res) => {
         populate: {
             path: 'bookId',
             model: 'Book',
+            populate: {
+                path: 'copies',
+                model: 'Copy',
+            },
         },
     });
 

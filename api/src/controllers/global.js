@@ -1,10 +1,17 @@
 const Copy = require('../models/Copy');
+const Order = require('../models/Order');
 const User = require('../models/User');
 exports.receivedBook = async (req, res) => {
     try {
         if (user.borrowed.includes(req.body.copyId)) {
             return res.status(400).json({ error: 'book already borrowed' });
         }
+        const order = await Order.findOne({
+            isbn: req.body.copyId,
+            toUser: req.user._id,
+        });
+        order.deliveryStatus = 'DELIVERED_TO_BORROWER';
+        await order.save();
         const copy = await Copy.findOneAndUpdate(
             { _id: req.body.copyId },
             { isBorrowed: true }
