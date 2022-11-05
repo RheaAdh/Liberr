@@ -30,25 +30,20 @@ export const currentSubscription = route(async (req, res) => {
 });
 
 export const choosePlan = route(async (req, res) => {
-    // don't forget to wrap function in route()
-    //TODO: if already has a plan show that and its due date
-
     const user = await User.findOne({ email: req.user.email });
     if (user.subscriptionEndDate > Date.now()) {
         return res.send({
             success: false,
             msg:
                 'You already have a plan, please update plan only on ' +
-                user.subscriptionEndDate,
+                moment(user.subscriptionEndDate).format('DD/MM/YYYY'),
         });
     }
     const { subscriptionId, numberOfMonths } = req.body;
     user.subscriptionType = subscriptionId;
     user.subscribedNumberOfMonths = numberOfMonths;
     user.subscriptionEndDate = moment().add(30, 'days').calendar();
-    console.log('====================================');
-    console.log(moment().add(30, 'days').calendar());
-    console.log('====================================');
     await user.save();
+    
     return res.send({ success: true, msg: 'Saved' });
 });

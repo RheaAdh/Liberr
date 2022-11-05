@@ -7,6 +7,10 @@ const copySchema = new mongoose.Schema(
             type: String,
             unique: true,
         },
+        bookId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Book',
+        },
         condition: {
             type: String,
             enum: ['VERY GOOD', 'GOOD', 'BAD', 'VERY BAD'],

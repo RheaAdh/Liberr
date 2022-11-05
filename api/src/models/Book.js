@@ -3,32 +3,34 @@ const bookSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            
         },
-        authors: [{
-            type: String,
-        }],
+        authors: [
+            {
+                type: String,
+            },
+        ],
         genre: {
             type: String,
-            
         },
         tags: [
             {
                 type: String,
             },
         ],
-        copies: [{
-            type: String,
-            ref: 'Copy',
-        }],
+        copies: [
+            {
+                type: String,
+                ref: 'Copy',
+            },
+        ],
         isAvailable: {
             type: Boolean,
             default: true,
         },
-        imageLink:{
-            type:String,
-            default:""
-        }
+        imageLink: {
+            type: String,
+            default: '',
+        },
     },
     { timestamps: true }
 );

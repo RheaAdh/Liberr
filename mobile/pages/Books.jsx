@@ -64,7 +64,8 @@ const handleOrderBook = async (id)=>{
 	}
 }
 
-//   if (books.length === 0) return <Loading />
+  if (!books.length) return <Loading fullScreen />
+
   return (
 	<WithGradientPage navigation={{navigation}}>
 		<Styled.container>

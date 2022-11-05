@@ -74,11 +74,11 @@ const userSchema = new mongoose.Schema(
         blocked: {
             isBlocked: {
                 type: Boolean,
-                blockedDate: Date,
-                reason: {
-                    type: String,
-                    enum: ['BOOK_LOST', 'BOOK_NOT_DONATED', 'OTHER'],
-                },
+            },
+            blockedDate: Date,
+            reason: {
+                type: String,
+                enum: ['BOOK_LOST', 'BOOK_NOT_DONATED', 'OTHER'],
             },
         },
     },
