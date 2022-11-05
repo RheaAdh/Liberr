@@ -4,6 +4,7 @@ const Copy = require('../models/Copy');
 
 exports.donateBook = async(req,res)=>{
     try{
+        console.log(req.body.isbn);
         const bookdata = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${req.body.isbn}`);
         // console.log(bookdata.data.items[0].volumeInfo)
         if(bookdata){
@@ -13,7 +14,8 @@ exports.donateBook = async(req,res)=>{
                 _id:req.body.isbn,
                 presentOwner:req.user,
                 isPaperBack:req.body.isPaperBack,
-                publisher:bookdata.data.items[0].volumeInfo.publisher
+                publisher:bookdata.data.items[0].volumeInfo.publisher,
+                imageLink : `https://covers.openlibrary.org/b/isbn/${req.body.isbn}-L.jpg`
             })
             // console.log(bookCopy)
             if(bookExists){
@@ -28,7 +30,8 @@ exports.donateBook = async(req,res)=>{
                     authors:bookdata.data.items[0].volumeInfo.authors,
                     genre:req.body.genre,
                     tags:req.body.tags,
-                    copies:[req.body.isbn]
+                    copies:[req.body.isbn],
+                    imageLink : `https://covers.openlibrary.org/b/isbn/${req.body.isbn}-L.jpg`
                 });
                 return res.json({'book':book});
             }
@@ -58,7 +61,8 @@ exports.replaceLostBook = async(req,res)=>{
             const newCopy = await Copy.create({_id:newIsbn,
                 presentOwner:req.user,
                 isPaperBack:req.body.isPaperBack,
-                publisher:bookdata.data.items[0].volumeInfo.publisher});
+                publisher:bookdata.data.items[0].volumeInfo.publisher,
+                imageLink : `https://covers.openlibrary.org/b/isbn/${newIsbn}-L.jpg`});
             const book = await Book.findOneAndUpdate({name:bookdata.data.items[0].volumeInfo.title},{
                     $push:{copies:newIsbn}
             },{new:true})
