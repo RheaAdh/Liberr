@@ -25,7 +25,11 @@ const bookSchema = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
+        imageLink:{
+            type:String,
+            default:""
+        }
     },
     { timestamps: true }
 );
-module.exports  = mongoose.model('Book', bookSchema);
+module.exports = mongoose.model('Book', bookSchema);

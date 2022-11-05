@@ -12,7 +12,7 @@ exports.donateBook = async(req,res)=>{
             const bookCopy = await Copy.create({
                 _id:req.body.isbn,
                 presentOwner:req.user,
-                bindType:req.body.bindType,
+                isPaperBack:req.body.isPaperBack,
                 publisher:bookdata.data.items[0].volumeInfo.publisher
             })
             // console.log(bookCopy)
@@ -57,7 +57,7 @@ exports.replaceLostBook = async(req,res)=>{
         if(bookdata){
             const newCopy = await Copy.create({_id:newIsbn,
                 presentOwner:req.user,
-                bindType:req.body.bindType,
+                isPaperBack:req.body.isPaperBack,
                 publisher:bookdata.data.items[0].volumeInfo.publisher});
             const book = await Book.findOneAndUpdate({name:bookdata.data.items[0].volumeInfo.title},{
                     $push:{copies:newIsbn}

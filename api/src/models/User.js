@@ -44,50 +44,54 @@ const userSchema = new mongoose.Schema(
             //         type: String,
             //     },
             // },
-            subscriptionType: {
+        },
+        subscriptionType: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Subscription',
+        },
+        subscriptionEndDate: {
+            type: Date,
+            default: null,
+        },
+        orders: [
+            {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Subscription',
+                ref: 'Order',
             },
-            orders: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Order',
-                },
-            ],
-            donationPoints: {
-                type: Number,
-                default: 1,
+        ],
+        donationPoints: {
+            type: Number,
+            default: 1,
+        },
+        borrowedCount: {
+            type: Number,
+            default: 0,
+        },
+        borrowed: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Copy',
             },
-            borrowedCount: {
-                type: Number,
-                default: 0,
+        ],
+        toLend: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Copy',
             },
-            borrowed: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Copy',
-                },
-            ],
-            toLend: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Copy',
-                },
-            ],
-            donated: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Copy',
-                },
-            ],
-            blocked: {
-                isBlocked: {
-                    type: Boolean,
-                    blockedDate: Date,
-                    reason: {
-                        type: String,
-                        enum: ['BOOK_LOST', 'BOOK_NOT_DONATED', 'OTHER'],
-                    },
+        ],
+        donated: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Copy',
+            },
+        ],
+        blocked: {
+            isBlocked: {
+                type: Boolean,
+                blockedDate: Date,
+                reason: {
+                    type: String,
+                    enum: ['BOOK_LOST', 'BOOK_NOT_DONATED', 'OTHER'],
                 },
             },
         },

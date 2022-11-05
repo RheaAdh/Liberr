@@ -10,8 +10,9 @@ const copySchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        bindType: {
-            type: String,
+        isPaperBack: {
+            type: Boolean,
+            default: false
         },
         publisher: {
             type: String,
@@ -38,4 +39,4 @@ const copySchema = new mongoose.Schema(
         _id:false 
     }
 );
-module.exports  = mongoose.model('Copy', copySchema);
+module.exports = mongoose.model('Copy', copySchema);

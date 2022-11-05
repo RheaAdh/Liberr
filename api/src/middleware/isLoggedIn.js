@@ -14,7 +14,7 @@ module.exports = async function (req, res, next) {
     }
 
     try {
-        const decoded = jwt.verify(token, "21h3ge2hei");
+        const decoded = jwt.verify(token, 'siaogboawpgbe');
         req.user = decoded;
         if (req.user) next();
     } catch (err) {
