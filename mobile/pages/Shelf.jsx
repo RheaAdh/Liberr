@@ -5,11 +5,11 @@ import Loading from '../components/Loading';
 import WithGradientPage from './WithGradientPage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Shelf() {
+export default function Shelf({navigation}) {
   const [borrowedSelected, setBorrowedSelected] = useState(true)
 
   return (
-    <WithGradientPage>
+    <WithGradientPage navigation={navigation}>
       <Styled.container>
       <Styled.switch>
         <TouchableOpacity onPress={()=>setBorrowedSelected(true)}>

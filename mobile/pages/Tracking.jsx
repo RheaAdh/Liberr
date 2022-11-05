@@ -3,9 +3,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Loading from '../components/Loading';
 import WithGradientPage from './WithGradientPage';
 
-export default function Tracking() {
+export default function Tracking({navigation}) {
   return (
-    <WithGradientPage>
+    <WithGradientPage navigation={navigation}>
       <Styled.container>
         {/* <Loading /> */}
       <Styled.heading>Tracking</Styled.heading>

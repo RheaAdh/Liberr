@@ -6,12 +6,12 @@ import { widthInPercent } from '../utils/utilities';
 import {useAuth} from '../context/AuthProvider';
 import ProfileLinks from '../components/ProfileLinks';
 
-export default function Profile() {
+export default function Profile({navigation}) {
 
   const user = useAuth().user;
 
   return (
-    <WithGradientPage isProfile={true}>
+    <WithGradientPage navigation={navigation} isProfile={true}>
       <Styled.container>
         {/* <Loading /> */}
         <Styled.stats>

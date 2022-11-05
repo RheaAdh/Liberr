@@ -287,7 +287,7 @@ const Styled = {
   `,
   subscriptionButtons: styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   margin-top: 5px;
   `,
@@ -299,9 +299,9 @@ const Styled = {
   `,
   subscriptionButtonText: styled.Text``,
   subscriptionTop: styled.View`
-  flex-direction: row;
+  /* flex-direction: row; */
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
 `,
 subscriptionBottom: styled.View`
 margin-top: 35px;

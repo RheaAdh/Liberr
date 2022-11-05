@@ -4,9 +4,9 @@ import Loading from '../components/Loading';
 import BookTile from '../components/BookTile';
 import WithGradientPage from './WithGradientPage';
 
-export default function Books() {
+export default function Books({navigation}) {
   return (
-	<WithGradientPage>
+	<WithGradientPage navigation={{navigation}}>
 		<Styled.container>
 		{/* <Loading /> */}
 			<Styled.list 
