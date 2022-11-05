@@ -2,9 +2,18 @@ const mongoose = require('mongoose');
 
 const copySchema = new mongoose.Schema(
     {
-        _id:{//isbn
+        _id: {
+            //isbn
+            type: String,
+            unique: true,
+        },
+        condition: {
+            type: String,
+            enum: ['VERY GOOD', 'GOOD', 'BAD', 'VERY_BAD'],
+        },
+        imageLink:{
             type:String,
-            unique:true
+            default:""
         },
         presentOwner: {
             type: mongoose.Schema.Types.ObjectId,
@@ -12,14 +21,14 @@ const copySchema = new mongoose.Schema(
         },
         isPaperBack: {
             type: Boolean,
-            default: false
+            default: false,
         },
         publisher: {
             type: String,
         },
-        isOrdered:{
-            type:Boolean,
-            default: false
+        isOrdered: {
+            type: Boolean,
+            default: false,
         },
         isBorrowed: {
             type: Boolean,
@@ -39,8 +48,6 @@ const copySchema = new mongoose.Schema(
             },
         },
     },
-    { timestamps: true,
-        _id:false 
-    }
+    { timestamps: true, _id: false }
 );
 module.exports = mongoose.model('Copy', copySchema);

@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import curve from "./../assets/curve.svg";
+import profileCurve from "./../assets/profileCurve.svg";
 import {useEffect, useState, useRef} from 'react';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { heightInPercent } from '../utils/utilities'
@@ -66,6 +67,7 @@ export default function WithGradientPage(props) {
               backgroundColor: "#BDC6EC",
             },
           }}
+<<<<<<< HEAD
         >
 			<Styled.addBookModal>
 			<Styled.addBookTop>
@@ -104,6 +106,33 @@ export default function WithGradientPage(props) {
 				<TouchableOpacity onPress={()=>refRBSheet.current.open()}>
 				<Styled.addBook>Add Book</Styled.addBook>
 				</TouchableOpacity>
+=======
+        ></RBSheet>
+			{
+				props.isProfile 
+				?
+				<Styled.profileCurve source={profileCurve}></Styled.profileCurve>
+				:
+				<Styled.curve source={curve}></Styled.curve>		
+			}
+			<Styled.header>
+				{
+					props?.isProfile
+					?
+					<Styled.user>
+						<h1 style={{margin: 0}}>{user.name}</h1>
+						<Styled.subscriptionType>
+							<p>{}</p>
+						</Styled.subscriptionType>
+					</Styled.user>
+					:
+					<Styled.wish>
+						<p style={{margin: 0}}>GOOD</p>
+						<h1 style={{margin: '-5px 0px'}}>{welcome.toUpperCase()}</h1>
+					</Styled.wish>
+				}
+				{(user.subscriptionType && user.subscriptionType !== null) && <Styled.addBook>Add Book</Styled.addBook>}
+>>>>>>> 10faf52835bf77b52a8d23809e443d493a7ba5a1
 			</Styled.header>
 			{props.children}
 		</Styled.container>
@@ -121,11 +150,30 @@ const Styled = {
 		top: 0;
 		left: 0;
 	`,
+	profileCurve: styled.Image`
+		position: absolute;
+		height: 185px;
+		width: 250px;
+		top: 0;
+		right: 0;
+	`,
 	header: styled.View`
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
 		padding: 20px
+	`,
+	user: styled.View`
+		padding-top: 3rem;
+		color: #1B1B1B;
+	`,
+	subscriptionType: styled.View`
+		color: #E3E3E3;
+		background: #42086F;
+		text-align: center;
+		padding-vertical: 5px;
+		border-radius: 15px;
+		width: fit-content;
 	`,
 	wish: styled.View`
 		color: #FFFFFF
