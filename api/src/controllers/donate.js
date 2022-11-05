@@ -49,7 +49,7 @@ exports.replaceLostBook = async(req,res)=>{
     try{
         const oldIsbn = req.body.oldIsbn;
         const newIsbn = req.body.newIsbn;
-        const oldBook = await Copy.findOneAndUpdate({_id:oldIsbn},{isLost:true});
+        const oldBook = await Copy.findOneAndUpdate({_id:oldIsbn},{isLost:true},{new:true});
         if(!oldBook){
             return res.json({'msg':'Invalid old isbn'})
         }
