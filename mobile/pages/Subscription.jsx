@@ -66,6 +66,7 @@ export default function Subscription({navigation}) {
         type: 'success',
         text1: 'Subscribed successfully'
       })
+      refRBSheet.current.close()
     }
     catch(err){
       Toast.show({

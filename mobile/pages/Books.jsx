@@ -6,11 +6,13 @@ import WithGradientPage from './WithGradientPage';
 import { useState, useEffect } from 'react';
 import api from '../utils/api.service';
 import Toast from 'react-native-toast-message';
+import useInputState from '../hooks/useInputState';
 
 export default function Books({navigation}) {
   
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const search = useInputState()
 
   useEffect(async () => {
 	async function fetchData () {
@@ -32,17 +34,27 @@ export default function Books({navigation}) {
 	fetchData();
   }, [])
 
+  const getFilteredBooks= ()=> books.filter((item)=>{
+	  console.log(item);
+	const searchTerm = `${item.authors} ${item.name}`
+	return searchTerm.toLowerCase().includes(search.value.toLowerCase())
+})
+
 //   if (books.length === 0) return <Loading />
   return (
 	<WithGradientPage navigation={{navigation}}>
 		<Styled.container>
-			<Styled.list>
+			<Styled.search {...search.props} placeholder="Search for your favourite book..." />
+			{getFilteredBooks().length ? <Styled.list>
 			{
-				books.length > 0 && books.map((item) => {
+				getFilteredBooks().map((item) => {
 					return <BookTile {...item} isBooksPage={true} />
 				})
 			}
-			</Styled.list>
+			</Styled.list>: 
+			<Styled.empty>
+			<Styled.emptyText>No books match your search :(</Styled.emptyText>
+			</Styled.empty>}
 		</Styled.container>
 	</WithGradientPage>
   );
@@ -57,5 +69,18 @@ const Styled = {
 	padding: 10px;
 	overflow-y: scroll;
 	height: 450px;
-  `
+  `,
+  search: styled.TextInput`
+   background-color: #fff;
+    font-size: 17;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 8px 10px 8px 20px;
+  `,
+  empty: styled.View`
+	margin-top: 20px;
+  `,
+  emptyText: styled.Text`
+  text-align: center;
+  `,
 };
