@@ -3,7 +3,7 @@ import axios from 'axios';
 export class APIService {
   constructor() {
     this.fetcher = axios.create({
-      baseURL: 'https://20ea-180-151-248-34.in.ngrok.io/',
+      baseURL: 'https://649d-14-98-8-70.in.ngrok.io/api',
     });
   }
 
@@ -22,7 +22,6 @@ export class APIService {
   async post(url, data, headers) {
     try {
       const raw = await this.fetcher.post(url, data, {
-        params,
         headers: {
           'Content-Type': 'application/json',
           ...headers,
