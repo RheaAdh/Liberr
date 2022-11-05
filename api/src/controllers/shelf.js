@@ -24,6 +24,9 @@ export const placeOrder = route(async (req, res) => {
     }
 
     //chk duedate of subs before place order
+    // if(Date.now>dueDate){
+    //     return res.status(400).jeon
+    // }
 
     //chk if u can place order or not because of plan stuff
     let subscriptionId = user.subscriptionType;
@@ -131,9 +134,14 @@ export const placeOrder = route(async (req, res) => {
 export const getBorrowed = route(async (req, res) => {
     // don't forget to wrap function in route()
 
-    const user = await User.findOne({ email: req.user.email }).populate(
-        'borrowed bookId'
-    );
+    const user = await User.findOne({ email: req.user.email }).populate({
+        path: 'borrowed',
+        model: 'Copy',
+        populate: {
+            path: 'bookId',
+            model: 'Book',
+        },
+    });
 
     return res.send({ success: true, data: user });
 });
@@ -141,9 +149,14 @@ export const getBorrowed = route(async (req, res) => {
 export const getToLend = route(async (req, res) => {
     // don't forget to wrap function in route()
 
-    const user = await User.findOne({ email: req.user.email }).populate(
-        'toLend bookId'
-    );
+    const user = await User.findOne({ email: req.user.email }).populate({
+        path: 'toLend',
+        model: 'Copy',
+        populate: {
+            path: 'bookId',
+            model: 'Book',
+        },
+    });
 
     return res.send({ success: true, data: user });
 });
@@ -151,6 +164,7 @@ export const getToLend = route(async (req, res) => {
 export const markAsRead = route(async (req, res) => {
     // don't forget to wrap function in route()
     const copy = await Copy.findById(req.body.copyId);
+    if (!copy) return res.status(400).json({ error: 'no copy' });
     copy.readingStatus.isCompleted = true;
     copy.readingStatus.dueDate = null;
     copy.isOrdered = false;
