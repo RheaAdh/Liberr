@@ -16,12 +16,13 @@ exports.donateBook = async (req, res) => {
             });
             // console.log(bookExists)
             const bookCopy = await Copy.create({
-                _id: req.body.isbn,
-                presentOwner: req.user,
-                isPaperBack: req.body.isPaperBack,
-                publisher: bookdata.data.items[0].volumeInfo.publisher,
-                imageLink: `https://covers.openlibrary.org/b/isbn/${req.body.isbn}-L.jpg`,
-            });
+                _id:req.body.isbn,
+                presentOwner:req.user,
+                isPaperBack:req.body.isPaperBack,
+                publisher:bookdata.data.items[0].volumeInfo.publisher,
+                condition:req.body.condition,
+                imageLink : `https://covers.openlibrary.org/b/isbn/${req.body.isbn}-L.jpg`
+            })
             // console.log(bookCopy)
             if (bookExists) {
                 const book = await Book.findOne({
@@ -54,13 +55,22 @@ exports.replaceLostBook = async (req, res) => {
     try {
         const oldIsbn = req.body.oldIsbn;
         const newIsbn = req.body.newIsbn;
-        const oldBook = await Copy.findOneAndUpdate(
-            { _id: oldIsbn },
-            { isLost: true },
-            { new: true }
-        );
-        if (!oldBook) {
-            return res.json({ msg: 'Invalid old isbn' });
+        const oldBook = await Copy.findOneAndUpdate({_id:oldIsbn},{isLost:true},{new:true});
+        if(!oldBook){
+            return res.json({'msg':'Invalid old isbn'})
+        }
+        const bookdata = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${oldIsbn}`);
+        if(bookdata){
+            const newCopy = await Copy.create({_id:newIsbn,
+                presentOwner:req.user,
+                isPaperBack:req.body.isPaperBack,
+                publisher:bookdata.data.items[0].volumeInfo.publisher,
+                condition:req.body.condition,
+                imageLink : `https://covers.openlibrary.org/b/isbn/${newIsbn}-L.jpg`});
+            const book = await Book.findOneAndUpdate({name:bookdata.data.items[0].volumeInfo.title},{
+                    $push:{copies:newIsbn}
+            },{new:true})
+                res.json({'book':book});
         }
         const bookdata = await axios.get(
             `https://www.googleapis.com/books/v1/volumes?q=isbn:${oldIsbn}`

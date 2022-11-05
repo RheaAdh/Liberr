@@ -20,16 +20,6 @@ export default function AddressForm({navigation, route}) {
     const auth = useAuth()
     const [loading, setLoading] = useState(false)
 
-    const login = async ()=>{
-        setLoading(true)
-        const token = await api.post('/auth/login', {
-            email: route.params.email,
-            password: route.params.password,
-        })
-        console.log(token);
-        await auth.login(token)
-        setLoading(false)
-    }
 
     const handleSubmit = async ()=>{
         if (!houseNumber.value || !pin.value || !city.value || !state.value) {
@@ -38,8 +28,20 @@ export default function AddressForm({navigation, route}) {
                 text1: 'Required fields are missing'
             })
         }
-        if (route.params && route.params.fromRegister) login()
-    }
+
+        const address = `${houseNumber.value} ${streetName.value} ${city.value} ${state.value} ${pin.value}`
+
+        await api.post('/profile/editAddress', {
+          address
+        }, {'x-auth-token': auth.token})
+
+        auth.updateUser({
+          address
+        })
+  
+        navigation.navigate('Home')
+        route.params && route.params.callback()
+      }
 
     if (loading) return <Loading/>
 
@@ -55,10 +57,12 @@ export default function AddressForm({navigation, route}) {
         <Styled.input {...pin.props} placeholder="PIN Code*" placeholderTextColor="#636363" />
       </Styled.form>
       <Styled.bottom>
-          <TouchableWithoutFeedback onPress={login}>
+         {(route.params && route.params.fromRegister) ? <TouchableWithoutFeedback onPress={login}>
             <Styled.skip>Skip for now</Styled.skip>
-          </TouchableWithoutFeedback>
-        <Button text='Continue' onPress={handleSubmit}/>
+          </TouchableWithoutFeedback>: <TouchableWithoutFeedback onPress={()=>navigation.navigate('Home')}>
+            <Styled.skip>Go back</Styled.skip>
+          </TouchableWithoutFeedback>}
+        <Button text={'Continue'} onPress={handleSubmit}/>
       </Styled.bottom>
     </Styled.container>
   );

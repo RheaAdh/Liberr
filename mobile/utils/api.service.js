@@ -3,7 +3,7 @@ import axios from 'axios';
 export class APIService {
   constructor() {
     this.fetcher = axios.create({
-      baseURL: 'https://649d-14-98-8-70.in.ngrok.io/api',
+      baseURL: 'http://localhost:5000/api',
     });
   }
 
@@ -34,7 +34,6 @@ export class APIService {
   }
 
   async put(url, data, headers) {
-    const token = localStorage.getItem('token');
     try {
       const raw = await this.fetcher.put(url, data, {
         headers: {
