@@ -1,8 +1,7 @@
 import React from 'react'; 
 
 import {View, Pressable, Dimensions, StyleSheet} from 'react-native'
-// import NavigationIcon from './navigationIcon'; 
-// import { MaterialCommunityIcons } from '@expo/vector-icons';
+import NavIcon from './NavIcon';
 
 const {width} = Dimensions.get('window')
 
@@ -35,11 +34,11 @@ const TabBar = ({ state, descriptors, navigation}) =>{
           <View key = {index} style = {[styles.mainItemContainer, {borderRightWidth: label=="notes"? 3:0}]}>
             <Pressable
               onPress = {onPress}
-              style = {{backgroundColor: isFocused?"#030D16": "#182028", color: "white", borderRadius: 20, }}>
-              <View style = {{justifyContent: 'center', alignItems: 'center', flex: 1, padding: 15}}>
+              style = {{color: isFocused && "#810CDD"}}>
+              <View style = {{ borderTop: isFocused && "3px solid #810CDD", justifyContent: 'center', alignItems: 'center', flex: 1, padding: 15}}>
                 {/* <NavigationIcon route={label} isFocused={isFocused}/> */}
-				{/* <MaterialCommunityIcons name="face-man-profile" size={24} color="black" /> */}
-				{label}
+				<NavIcon label={label} isFocused={isFocused}/>
+				<p style={{fontSize: "12px", fontWeight: isFocused && 'bold'}}>{label}</p>
               </View>
             </Pressable>
           </View>
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
 	width: "100%",
-    backgroundColor: "#182028",
+    backgroundColor: "#E1E1E1",
     borderTopRightRadius: 10,
 	borderTopLeftRadius: 10,
   },
@@ -63,10 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center', 
     alignItems: 'center', 
-    marginVertical: 10,
-    borderRadius: 1, 
-    borderColor: "#333B42"
-  }, 
+  }
 })
 
 
