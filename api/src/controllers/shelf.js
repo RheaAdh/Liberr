@@ -6,12 +6,12 @@ import Order from '../models/Order';
 import User from '../models/User';
 import Book from '../models/Book';
 import Copy from '../models/Copy';
-var dist = require('geo-distance-js');
 const geolib = require('geolib');
 import getDistance from 'geolib/es/getDistance';
 import Subscription from '../models/Subscription';
+
 export const placeOrder = route(async (req, res) => {
-    // don't forget to wrap function in route()
+    //TODO: chk if already placed order for copyid
 
     const user = await User.findOne({
         email: req.user.email
@@ -31,9 +31,13 @@ export const placeOrder = route(async (req, res) => {
     }
 
     //chk duedate of subs before place order
-    // if(Date.now>dueDate){
-    //     return res.status(400).jeon
-    // }
+    if (Date.now() > user.subscriptionEndDate) {
+        return res
+            .status(400)
+            .json({
+                error: 'Please renew your  existing subscription'
+            });
+    }
 
     //chk if u can place order or not because of plan stuff
     let subscriptionId = user.subscriptionType;
@@ -64,16 +68,16 @@ export const placeOrder = route(async (req, res) => {
             model: 'User',
         },
     });
-    // copiesArr = copiesArr.copies;
 
     var copiesArr = book.copies;
-    console.log('====================================');
+
     var copies = copiesArr.filter((copy) => {
         return copy.condition == bookCondition;
     });
-    console.log('====================================');
-    console.log(copies);
-    console.log('====================================');
+    if (copies.length == 0)
+        return res.status(400).json({
+            error: 'No Book with such requirement'
+        });
     let closestCopyId = copies[0]._id;
     var x = getDistance({
         latitude: copies[0].presentOwner.location.coordinates[0],
@@ -102,9 +106,7 @@ export const placeOrder = route(async (req, res) => {
             closestCopyId = copies[i]._id;
         }
     }
-    console.log('====================================');
-    console.log(closestCopyId);
-    console.log('====================================');
+
     const copy = await Copy.findById(closestCopyId).populate('presentOwner');
 
     // .populate({
@@ -125,11 +127,12 @@ export const placeOrder = route(async (req, res) => {
     //     },
     // });
     //add copy to orders
-    const order = new Order();
-    order.fromUser = copy.presentOwner._id;
-    order.toUser = user._id;
-    order.isbn = copy._id;
-    order.deliveryStatus = 'REQUESTED_FOR_BORROW';
+    const order = await Order.create({
+        fromUser: copy.presentOwner._id,
+        toUser: user._id,
+        isbn: copy._id,
+        deliveryStatus: 'REQUESTED_FOR_BORROW',
+    });
 
     user.orders.push(order._id);
     await user.save();
@@ -194,7 +197,6 @@ export const getToLend = route(async (req, res) => {
 });
 
 export const markAsRead = route(async (req, res) => {
-    // don't forget to wrap function in route()
     const copy = await Copy.findById(req.body.copyId);
     if (!copy) return res.status(400).json({
         error: 'no copy'
@@ -217,7 +219,6 @@ export const markAsRead = route(async (req, res) => {
 });
 
 export const getBookFromCopy = route(async (req, res) => {
-    // don't forget to wrap function in route()
     const copyId = req.body.copyId;
     console.log(copyId)
     try {
