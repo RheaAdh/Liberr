@@ -9,13 +9,12 @@ exports.donateBook = async (req, res) => {
         const bookdata = await axios.get(
             `https://www.googleapis.com/books/v1/volumes?q=isbn:${req.body.isbn}`
         );
-        console.log(bookdata);
 
         if (bookdata.data.totalItems != 0) {
             const bookExists = await Book.exists({
                 name: bookdata.data.items[0].volumeInfo.title,
             });
-            // console.log(bookExists)
+
             const bookCopy = await Copy.create({
                 _id: req.body.isbn,
                 presentOwner: req.user,
@@ -24,7 +23,6 @@ exports.donateBook = async (req, res) => {
                 condition: req.body.condition,
                 imageLink: `https://covers.openlibrary.org/b/isbn/${req.body.isbn}-L.jpg`,
             });
-            // console.log(bookCopy)
 
             if (bookExists) {
                 const book = await Book.findOne({

@@ -3,13 +3,11 @@ import Order from '../models/Order';
 import User from '../models/User';
 import Book from '../models/Book';
 import Copy from '../models/Copy';
-var dist = require('geo-distance-js');
 const geolib = require('geolib');
 import getDistance from 'geolib/es/getDistance';
 import Subscription from '../models/Subscription';
-export const placeOrder = route(async (req, res) => {
-    // don't forget to wrap function in route()
 
+export const placeOrder = route(async (req, res) => {
     const user = await User.findOne({ email: req.user.email });
     if (user.blocked.isBlocked) {
         return res.send({
@@ -20,13 +18,15 @@ export const placeOrder = route(async (req, res) => {
 
     ///chk if subss
     if (!user.subscriptionType) {
-        return res.status(400).json({ error: 'not subscribed' });
+        return res.status(400).json({ error: 'User not subscribed' });
     }
 
     //chk duedate of subs before place order
-    // if(Date.now>dueDate){
-    //     return res.status(400).jeon
-    // }
+    if (Date.now() > dueDate) {
+        return res
+            .status(400)
+            .json({ error: 'Please renew your  existing subscription' });
+    }
 
     //chk if u can place order or not because of plan stuff
     let subscriptionId = user.subscriptionType;
@@ -50,16 +50,13 @@ export const placeOrder = route(async (req, res) => {
             model: 'User',
         },
     });
-    // copiesArr = copiesArr.copies;
 
     var copiesArr = book.copies;
-    console.log('====================================');
+
     var copies = copiesArr.filter((copy) => {
         return copy.condition == bookCondition;
     });
-    console.log('====================================');
-    console.log(copies);
-    console.log('====================================');
+
     let closestCopyId = copies[0]._id;
     var x = getDistance(
         {
@@ -83,20 +80,13 @@ export const placeOrder = route(async (req, res) => {
                 longitude: currentloc.coordinates[1],
             }
         );
-        // var x = dist.getDistance(
-        //     copies[i].presentOwner.location.coordinates[0],
-        //     copies[i].presentOwner.location.coordinates[1],
-        //     currentloc.coordinates[0],
-        //     currentloc.coordinates[1]
-        // );
+
         if (x < mnDist) {
             mnDist = x;
             closestCopyId = copies[i]._id;
         }
     }
-    console.log('====================================');
-    console.log(closestCopyId);
-    console.log('====================================');
+
     const copy = await Copy.findById(closestCopyId).populate('presentOwner');
 
     // .populate({
@@ -128,13 +118,10 @@ export const placeOrder = route(async (req, res) => {
     copy.isOrdered = true;
     await copy.save();
 
-    //TODO:copy isordered true based on condition and distance
     return res.send({ success: true, data: copy });
 });
 
 export const getBorrowed = route(async (req, res) => {
-    // don't forget to wrap function in route()
-
     const user = await User.findOne({ email: req.user.email })
         .populate('borrowed')
         .populate({
@@ -154,8 +141,6 @@ export const getBorrowed = route(async (req, res) => {
 });
 
 export const getToLend = route(async (req, res) => {
-    // don't forget to wrap function in route()
-
     const user = await User.findOne({ email: req.user.email }).populate({
         path: 'toLend',
         model: 'Copy',
@@ -173,7 +158,6 @@ export const getToLend = route(async (req, res) => {
 });
 
 export const markAsRead = route(async (req, res) => {
-    // don't forget to wrap function in route()
     const copy = await Copy.findById(req.body.copyId);
     if (!copy) return res.status(400).json({ error: 'no copy' });
     copy.readingStatus.isCompleted = true;
@@ -189,7 +173,6 @@ export const markAsRead = route(async (req, res) => {
 });
 
 export const getBookFromCopy = route(async (req, res) => {
-    // don't forget to wrap function in route()
     const copyId = req.body.copyId;
     const copy = await Copy.findOne({ _id: copyId });
     const book = await Book.findOne({ _id: copy.bookId });
