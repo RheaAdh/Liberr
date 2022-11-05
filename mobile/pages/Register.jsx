@@ -1,13 +1,12 @@
 import styled from 'styled-components/native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import Loading from '../components/Loading';
 
 
-export default function Home() {
+export default function Register() {
   return (
     <Styled.container>
-      {/* <Loading /> */}
       <Styled.heading>
+          Register
       </Styled.heading>
     </Styled.container>
   );

@@ -3,7 +3,7 @@ import axios from 'axios';
 export class APIService {
   constructor() {
     this.fetcher = axios.create({
-      baseURL: process.env.REACT_APP_API_URI,
+      baseURL: 'https://20ea-180-151-248-34.in.ngrok.io/',
     });
   }
 
