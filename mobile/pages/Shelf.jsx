@@ -57,7 +57,7 @@ export default function Shelf() {
       fetchToLendData();
     }, [borrowedSelected])
 
-    if (loading) return <Loading />
+    if (loading) return <Loading fullScreen={true}/>
   return (
     <WithGradientPage>
       <Styled.container>

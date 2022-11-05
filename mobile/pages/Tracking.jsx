@@ -2,8 +2,12 @@ import styled from 'styled-components/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Loading from '../components/Loading';
 import WithGradientPage from './WithGradientPage';
+import {useAuth} from '../context/AuthProvider';
 
 export default function Tracking() {
+
+  const auth = useAuth();
+  console.log(auth)
 
   return (
     <WithGradientPage>

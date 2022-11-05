@@ -114,7 +114,7 @@ export default function Subscription({navigation}) {
   }, [])
 
 
-  if (!data) return <Loading/>
+  if (!data) return <Loading fullScreen={true}/>
 
 
   return (

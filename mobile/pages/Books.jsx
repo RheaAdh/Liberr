@@ -32,7 +32,7 @@ export default function Books() {
 	fetchData();
   }, [])
 
-//   if (books.length === 0) return <Loading />
+  if (books.length === 0) return <Loading fullScreen={true}/>
   return (
 	<WithGradientPage>
 		<Styled.container>
