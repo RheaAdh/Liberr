@@ -11,7 +11,7 @@ export default function AuthStack() {
       screenOptions={{
         header: () => null,
       }}
-      initialRouteName="Register"
+      initialRouteName="Landing"
     >
       <Stack.Screen name="Landing" component={Landing} />
       <Stack.Screen name="Register" component={Register} />

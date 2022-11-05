@@ -66,7 +66,7 @@ export default function Register({navigation}) {
     }
   }
 
-  if (loading) return <Loading/>
+  if (loading) return <Loading fullScreen/>
 
   return (
     <Styled.container>

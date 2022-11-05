@@ -17,7 +17,7 @@ export default function AuthProvider({ children }) {
             const token = await AsyncStorage.getItem('token');
             const userJSON = await AsyncStorage.getItem('user');
             if (token) {
-                const user = jwt_decode(token)
+                console.log(token);
                 setToken(token)
                 setUser(JSON.parse(userJSON))
             }
@@ -28,6 +28,7 @@ export default function AuthProvider({ children }) {
     const login = async (token) => {
         const user = jwt_decode(token)
         await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
         setToken(token)
         setUser(user)
     }
