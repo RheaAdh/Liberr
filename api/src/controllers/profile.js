@@ -9,3 +9,22 @@ export const getOrders = route(async (req, res) => {
         .populate('orders');
     return res.send({ success: true, data: user });
 });
+
+export async function editAddress(req, res) {
+    try {
+        let { address } = req.body;
+        let user = await User.findOne({ email: req.user.email });
+        if (!user) {
+            return res.send({ success: false, msg: 'Merchant doesnt exist' });
+        }
+        user.address = address;
+        user.save();
+        return res.send({
+            success: false,
+            msg: 'Updated address',
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({ success: false, msg: 'Server Error' });
+    }
+}

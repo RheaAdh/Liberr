@@ -7,8 +7,10 @@ import Toast from 'react-native-toast-message';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { heightInPercent } from '../utils/utilities'
+import WithGradientPage from './WithGradientPage';
 
-export default function Subscription() {
+
+ function Subscription() {
   const refRBSheet = useRef();
 
   const [data, setData] = useState([
@@ -201,3 +203,5 @@ const Styled = {
     font-size: 17;
   `,
 };
+
+export default <WithGradientPage><Subscription/></WithGradientPage>
