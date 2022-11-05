@@ -9,5 +9,5 @@ export const placeOrder = route(async (req, res) => {
     const user = await (await User.findOne({ email: req.user.email }))
         .select('orders')
         .populate('orders');
-    return res.send({ success: true, data: user });
+        return res.send({ success: true, data: user });
 });
