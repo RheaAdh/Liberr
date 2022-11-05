@@ -49,6 +49,6 @@ export const choosePlan = route(async (req, res) => {
     console.log('====================================');
     console.log(moment().add(30, 'days').calendar());
     console.log('====================================');
-    user.save();
+    await user.save();
     return res.send({ success: true, msg: 'Saved' });
 });

@@ -38,7 +38,6 @@ const userSchema = new mongoose.Schema(
         subscriptionType: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Subscription',
-            default: null,
         },
         subscriptionEndDate: {
             type: Date,
