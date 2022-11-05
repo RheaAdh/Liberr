@@ -1,6 +1,7 @@
 import { route, HTTPError } from '../utils/utilities';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
+import moment from 'moment';
 export const allSubscriptions = route(async (req, res) => {
     // don't forget to wrap function in route()
     const subscriptions = await Subscription.find();
@@ -24,30 +25,34 @@ export const addSubscription = route(async (req, res) => {
 
 export const currentSubscription = route(async (req, res) => {
     // don't forget to wrap function in route()
-
+    const user = await User.find({ email: req.user.email })
+        .select('subscriptionType subscriptionEndDate')
+        .populate('subscriptionType');
     return res.send({
         success: true,
-        data: req.user.subscriptionType,
-        msg: 'Saved',
+        msg: user,
     });
 });
 
 export const choosePlan = route(async (req, res) => {
     // don't forget to wrap function in route()
-    //if already has a plan show that and its due date
-    // if (req.user.subscriptionEndDate > Date.now()) {
-    //     throw Error(
-    //         'Already subscribed, please try again on',
-    //         req.user.subscriptionEndDate
-    //     );
-    // }
+    //TODO: if already has a plan show that and its due date
 
     const user = await User.findOne({ email: req.user.email });
+    if (user.subscriptionEndDate > Date.now()) {
+        return res.send({
+            success: false,
+            msg:
+                'You already have a plan, please update plan only on ' +
+                user.subscriptionEndDate,
+        });
+    }
     const { subscriptionId } = req.body;
     user.subscriptionType = subscriptionId;
+    user.subscriptionEndDate = moment().add(30, 'days').calendar();
+    console.log('====================================');
+    console.log(moment().add(30, 'days').calendar());
+    console.log('====================================');
     user.save();
-    console.log('====================================');
-    console.log(user);
-    console.log('====================================');
     return res.send({ success: true, msg: 'Saved' });
 });
