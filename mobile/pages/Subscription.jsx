@@ -9,93 +9,18 @@ import { heightInPercent } from '../utils/utilities'
 import WithGradientPage from './WithGradientPage';
 import api from '../utils/api.service'
 import Button from '../components/Button';
+import { useAuth } from '../context/AuthProvider';
 
 const tick = require('../assets/icons/check.png')
 const tickWhite = require('../assets/icons/check_white.png')
 
 export default function Subscription({navigation}) {
   const refRBSheet = useRef();
-  const isCarousel = useRef(null)
-  const [selected, setSelected] = useState()
+  const auth = useAuth()
+  const [selected, setSelected] = useState(null)
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(0)
 
-  const [data, setData] = useState([
-    {
-    "_id": "63664f6aa43e2992344510a3",
-    "name": "Casual Reader",
-    "maxBorrowCount": 2,
-    "plans": [
-    {
-    "numberOfMonths": 1,
-    "price": 299,
-    "_id": "63664f6aa43e2992344510a4"
-    },
-    {
-    "numberOfMonths": 3,
-    "price": 799,
-    "_id": "63664f6aa43e2992344510a5"
-    },
-    {
-    "numberOfMonths": 6,
-    "price": 1499,
-    "_id": "63664f6aa43e2992344510a6"
-    }
-    ],
-    "createdAt": "2022-11-05T11:56:26.765Z",
-    "updatedAt": "2022-11-05T11:56:26.765Z",
-    "__v": 0
-    },
-    {
-    "_id": "63664fa0a43e2992344510a8",
-    "name": "Avid Reader",
-    "maxBorrowCount": 3,
-    "plans": [
-    {
-    "numberOfMonths": 1,
-    "price": 449,
-    "_id": "63664fa0a43e2992344510a9"
-    },
-    {
-    "numberOfMonths": 3,
-    "price": 1249,
-    "_id": "63664fa0a43e2992344510aa"
-    },
-    {
-    "numberOfMonths": 6,
-    "price": 2399,
-    "_id": "63664fa0a43e2992344510ab"
-    }
-    ],
-    "createdAt": "2022-11-05T11:57:20.591Z",
-    "updatedAt": "2022-11-05T11:57:20.591Z",
-    "__v": 0
-    },
-    {
-    "_id": "63664fe3a43e2992344510ad",
-    "name": "Book Worm",
-    "maxBorrowCount": 5,
-    "plans": [
-    {
-    "numberOfMonths": 1,
-    "price": 579,
-    "_id": "63664fe3a43e2992344510ae"
-    },
-    {
-    "numberOfMonths": 3,
-    "price": 1639,
-    "_id": "63664fe3a43e2992344510af"
-    },
-    {
-    "numberOfMonths": 6,
-    "price": 3179,
-    "_id": "63664fe3a43e2992344510b0"
-    }
-    ],
-    "createdAt": "2022-11-05T11:58:27.487Z",
-    "updatedAt": "2022-11-05T11:58:27.487Z",
-    "__v": 0
-    }
-    ])
+  const [data, setData] = useState()
   
   useEffect(() => {
     (async ()=>{
@@ -107,14 +32,52 @@ export default function Subscription({navigation}) {
         console.log(err);
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong'
+          text1: 'Something went wrong!'
         })
       }
     })()
   }, [])
 
+  const handleSubmit = async ()=>{
+    let numberOfMonths = 0;
+    if (selectedPlanIndex === 1) {
+      numberOfMonths = 3;
+    }
+    if (selectedPlanIndex ===2) {
+      numberOfMonths = 5;
+    }
+    try {
+      const res = await api.post('/subscription/choosePlan', {
+        subscriptionId: data[selected]._id,
+        numberOfMonths
+      }, {
+        'x-auth-token': auth.token
+      })
 
-  if (!data) return <Loading/>
+      if (!res.success) {
+        Toast.show({
+          type: 'error',
+          text1:res.msg
+        })
+        return;
+      }
+
+      Toast.show({
+        type: 'success',
+        text1: 'Subscribed successfully'
+      })
+    }
+    catch(err){
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong!'
+      })
+    }
+  }
+
+
+
+  if (!data) return <Loading fullScreen/>
 
 
   return (
@@ -123,7 +86,7 @@ export default function Subscription({navigation}) {
       <RBSheet
           ref={refRBSheet}
           closeOnDragDown={true}
-          height={heightInPercent(35)}
+          height={heightInPercent(40)}
           customStyles={{
             container: {
               borderRadius: 12,
@@ -136,27 +99,33 @@ export default function Subscription({navigation}) {
 <Styled.subscription>
   <Styled.subscriptionText>SUBSCRIPTION DETAILS</Styled.subscriptionText>
   <Styled.subscriptionTop>
-  <Styled.subscriptionPrice>₹ {data[0].plans[selectedPlanIndex].price}</Styled.subscriptionPrice>
+  <Styled.subscriptionPrice>₹ {selected!==null &&  data[selected].plans[selectedPlanIndex].price}</Styled.subscriptionPrice>
   <Styled.subscriptionButtons>
-  <Styled.subscriptionButton>
-  <Styled.subscriptionButtonText>
+    <TouchableWithoutFeedback onPress={()=>setSelectedPlanIndex(0)}>
+  <Styled.subscriptionButton selected={selectedPlanIndex==0}>
+  <Styled.subscriptionButtonText selected={selectedPlanIndex==0}>
     1 Month
     </Styled.subscriptionButtonText>
     </Styled.subscriptionButton>
-    <Styled.subscriptionButton>
-  <Styled.subscriptionButtonText>
+    </TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={()=>setSelectedPlanIndex(1)}>
+    <Styled.subscriptionButton selected={selectedPlanIndex==1}>
+  <Styled.subscriptionButtonText selected={selectedPlanIndex==1}>
   3 Months
     </Styled.subscriptionButtonText>
     </Styled.subscriptionButton>
-    <Styled.subscriptionButton>
-  <Styled.subscriptionButtonText>
+    </TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={()=>setSelectedPlanIndex(2)}>
+    <Styled.subscriptionButton selected={selectedPlanIndex==2}>
+  <Styled.subscriptionButtonText selected={selectedPlanIndex==2}>
   5 Months
     </Styled.subscriptionButtonText>
     </Styled.subscriptionButton>
+    </TouchableWithoutFeedback>
   </Styled.subscriptionButtons>
   </Styled.subscriptionTop>
   <Styled.subscriptionBottom>
-    <Button text='Subscribe now'/>
+    <Button text='Subscribe now' onPress={handleSubmit}/>
   </Styled.subscriptionBottom>
 </Styled.subscription>
         </RBSheet>
@@ -295,13 +264,24 @@ const Styled = {
     border: 1px solid #333;
     padding: 10px 15px;
     margin: 0 1px;
-    border-radius: 3px;
+    border-radius: 5px;
+
+    ${(props)=> props.selected && `
+  background-color: #7E0CD8;
+  border: 1px solid #3330;
+  `}
   `,
-  subscriptionButtonText: styled.Text``,
+  subscriptionButtonText: styled.Text`
+    ${(props)=> props.selected && `
+  color: #fff;
+  `}
+
+  `,
   subscriptionTop: styled.View`
   /* flex-direction: row; */
   justify-content: space-between;
   /* align-items: center; */
+  background-color: #fff;
 `,
 subscriptionBottom: styled.View`
 margin-top: 35px;

@@ -10,6 +10,7 @@ import useInputState from '../hooks/useInputState'
 import Button from '../components/Button'
 import api from '../utils/api.service';
 import { useAuth } from '../context/AuthProvider';
+import Toast from 'react-native-toast-message';
 
 export default function WithGradientPage(props) {
 	const refRBSheet = useRef();
@@ -40,10 +41,29 @@ export default function WithGradientPage(props) {
 				'x-auth-token': auth.token
 			}
 			)
+			
+			if (res.msg==="Invalid isbn") {
+				Toast.show({
+					type: 'error',
+					text1: 'Invalid ISBN',
+				});
+				return;
+			}
+
+			Toast.show({
+				type: 'success',
+				text1: 'Book added. Thanks!',
+			});
+
 			console.log(res);
+			
+			refRBSheet.current.close();
 		}
 		catch(err){
-			console.log(err);
+			Toast.show({
+				type: 'error',
+				text1: 'Book already exisits in the system',
+			});
 		}
 	}
 
@@ -71,32 +91,24 @@ export default function WithGradientPage(props) {
           }}
         >
 			<Styled.addBookModal>
-			<Styled.addBookTop>
-  <Styled.addBookText>ADD BOOK</Styled.addBookText>
-  <Styled.input {...bookISBN.props} placeholder="ISBN number" placeholderTextColor="#636363" />
-  <Styled.isbnHint>ISBN can be found at the back of your book above the bar code</Styled.isbnHint>
-		{/* <Styled.addBookButtons>
-			<Styled.addBookButton onPress={()=>setIsFiction(true)}>
-				<Styled.addBookButtonText selected={isFiction}>Ficton</Styled.addBookButtonText>
-			</Styled.addBookButton>
-			<Styled.addBookButton onPress={()=>setIsFiction(false)}>
-				<Styled.addBookButtonText selected={!isFiction}>Non Ficton</Styled.addBookButtonText>
-			</Styled.addBookButton>
-		</Styled.addBookButtons> */}
-		<Styled.addBookButtons>
-			<Styled.addBookButton onPress={()=>setIsPaperback(true)}>
-				<Styled.addBookButtonText selected={isPaperback}>Paperback</Styled.addBookButtonText>
-			</Styled.addBookButton>
-			<Styled.addBookButton onPress={()=>setIsPaperback(false)}>
-				<Styled.addBookButtonText selected={!isPaperback}>Hardcover</Styled.addBookButtonText>
-			</Styled.addBookButton>
-		</Styled.addBookButtons>
-		<Styled.input {...genre.props} placeholder="Genre" placeholderTextColor="#636363" />
-		</Styled.addBookTop>
-		<Styled.addBookBottom>
-		<Button text="Add Book" onPress={handleSubmit} />
-		</Styled.addBookBottom>
-</Styled.addBookModal>
+				<Styled.addBookTop>
+					<Styled.addBookText>ADD BOOK</Styled.addBookText>
+					<Styled.input {...bookISBN.props} placeholder="ISBN number" placeholderTextColor="#636363" />
+					<Styled.isbnHint>ISBN can be found at the back of your book above the bar code</Styled.isbnHint>
+					<Styled.addBookButtons>
+						<Styled.addBookButton onPress={()=>setIsPaperback(true)}>
+							<Styled.addBookButtonText selected={isPaperback}>Paperback</Styled.addBookButtonText>
+						</Styled.addBookButton>
+						<Styled.addBookButton onPress={()=>setIsPaperback(false)}>
+							<Styled.addBookButtonText selected={!isPaperback}>Hardcover</Styled.addBookButtonText>
+						</Styled.addBookButton>
+					</Styled.addBookButtons>
+					<Styled.input {...genre.props} placeholder="Genre" placeholderTextColor="#636363" />
+				</Styled.addBookTop>
+				<Styled.addBookBottom>
+					<Button text="Add Book" onPress={handleSubmit} />
+				</Styled.addBookBottom>
+			</Styled.addBookModal>
 		</RBSheet>
 			{
 				props.isProfile 

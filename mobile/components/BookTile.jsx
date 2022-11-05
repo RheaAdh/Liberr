@@ -5,30 +5,30 @@ import BookMetaData from './BookMetaData';
 import getLiberr from './../assets/getLiberr.png';
 
 export default function BookTile({
-	isBooksPage, 
-	isBorrowedShelf, 
-	isLentShelf, 
-	bookName, 
-	author, 
-	image, 
-	isbn, 
-	publication, 
-	isPaperBack 
+	isBooksPage=false, 
+	isBorrowedShelf=false, 
+	isLentShelf=false, 
+	name, 
+	authors, 
+	imageLink, 
+	genre,
+	copies
 }) {
 	return (
 		<Styled.container>
-			<Styled.bookImage source="https://edit.org/images/cat/book-covers-big-2019101610.jpg"/>
+			<Styled.bookImage source={imageLink}/>
 			<Styled.bookInfo>
 				<Styled.genre>
-					<Badge text={"gg"} backgroundColor={"#404040"}/>
+					<Badge text={genre} backgroundColor={"#404040"}/>
+					{copies.length === 1 && <Badge text={'Unique Copy'} backgroundColor={"#810CDD"}/>}
 				</Styled.genre>
-				<Styled.name>To Kill A Mockingbird</Styled.name>
-				<Styled.author>Harper Lee</Styled.author>
+				<Styled.name>{name}</Styled.name>
+				<Styled.author>{authors[0]}</Styled.author>
 				<Styled.meta>
 					<Styled.data>
-						<BookMetaData dataKey={"PUBL"} value={"Penguin Publishers"}/>
-						<BookMetaData dataKey={"BIND"} value={"Paper Back"}/>
-						<BookMetaData dataKey={"ISBN"} value={"12937 971412 927"}/>
+						<BookMetaData dataKey={"PUBL"} value={copies[0].publisher}/>
+						<BookMetaData dataKey={"BIND"} value={copies[0].isPaperBack ? "Paperback Edition" : "Hardcover Edition"}/>
+						<BookMetaData dataKey={"ISBN"} value={copies[0]._id}/>
 					</Styled.data>
 					<Styled.get>
 						<div style={{ 
@@ -52,8 +52,8 @@ export default function BookTile({
 
 const Styled = {
 	container: styled(SafeAreaView)`
-    	flex: 1;
 		flexDirection: row;
+		margin: 10px 0;
   	`,
 	bookImage: styled.Image`
 		width: 100px;

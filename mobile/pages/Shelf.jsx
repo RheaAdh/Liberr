@@ -1,16 +1,70 @@
-import {useState} from 'react'
 import styled from 'styled-components/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Loading from '../components/Loading';
 import WithGradientPage from './WithGradientPage';
+import {useEffect, useState} from 'react';
+import {useAuth} from '../context/AuthProvider';
+import api from '../utils/api.service';
+import Toast from 'react-native-toast-message';
+import BookTile from '../components/BookTile';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Shelf({navigation}) {
-  const [borrowedSelected, setBorrowedSelected] = useState(true)
 
+  const [loading, setLoading] = useState(true);
+  const [borrowedSelected, setBorrowedSelected] = useState(true)
+  const [books, setBooks] = useState([]);
+  const auth = useAuth();
+
+  async function fetchBorrowedData () {
+    try {
+      setLoading(true);
+      const res = await api.get('/shelf/getBorrowed', {'x-auth-token' : auth.token});
+      setBooks(res.data.borrowed);
+      console.log(res.data);
+      setLoading(false);
+    } catch(err) {
+        console.log(err);
+        setLoading(false);
+        Toast.show({
+            type: 'error',
+            text1: err.response.data.error,
+        });
+    }
+  }
+
+  async function fetchToLendData () {
+    try {
+      setLoading(true);
+      const res = await api.get('/shelf/getToLend', {'x-auth-token' : auth.token});
+      setBooks(res.data.borrowed);
+      console.log(res.data);
+      setLoading(false);
+    } catch(err) {
+        console.log(err);
+        setLoading(false);
+        Toast.show({
+            type: 'error',
+            text1: err.response.data.error,
+        });
+    }
+  }
+
+  useEffect(async () => {
+    fetchData(); 
+    }, [])
+
+    if (loading) return <Loading />
   return (
     <WithGradientPage navigation={navigation}>
       <Styled.container>
+        <Styled.list>
+        {
+          books.length > 0 && books.map((item) => {
+            return <BookTile {...item} isBooksPage={true} />
+          })
+        }
+        </Styled.list>
       <Styled.switch>
         <TouchableOpacity onPress={()=>setBorrowedSelected(true)}>
         <Styled.heading selected={borrowedSelected}>Borrowed Shelf</Styled.heading>
@@ -30,6 +84,11 @@ const Styled = {
     flex: 1;
     padding-top: 100px;
   `,
+  heading: styled.Text``,
+  list: styled.View`
+	  padding: 10px;
+	  overflow-y: scroll;
+  `,
   switch: styled.View`
     flex-direction: row;
     align-items: center;
@@ -41,7 +100,7 @@ const Styled = {
     background-color: #4448;
 `,
   heading: styled.Text`
-    color: #444;
+    color: #ADADAD;
     font-size: 19;
     margin: 0 10px;
     font-family: 'heebo-500';
