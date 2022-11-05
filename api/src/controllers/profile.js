@@ -15,7 +15,7 @@ export async function editAddress(req, res) {
         let { address } = req.body;
         let user = await User.findOne({ email: req.user.email });
         if (!user) {
-            return res.send({ success: false, msg: 'Merchant doesnt exist' });
+            return res.send({ success: false, msg: 'User doesnt exist' });
         }
         user.address = address;
         user.save();
