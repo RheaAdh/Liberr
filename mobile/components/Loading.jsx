@@ -1,8 +1,8 @@
-import Lottie from 'lottie-react-native';
-import { Text } from 'react-native'
+import { ActivityIndicator } from "react-native";
+import {ScreenCenter} from '../utils/styled.components'
 
-export default function Loading() {
-    return <Text>Loading</Text>
-
-    // return <Lottie source={require('../assets/loading.json')} autoPlay loop />
+export default function Loading({fullScreen}) {
+    if (fullScreen) return <ScreenCenter><ActivityIndicator size="large" color="#7E0CD8" /></ScreenCenter>
+    
+    return <ActivityIndicator size="large" color="#7E0CD8" />
 }

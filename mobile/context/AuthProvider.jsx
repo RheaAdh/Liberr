@@ -15,10 +15,11 @@ export default function AuthProvider({ children }) {
     useEffect(() => {
         (async ()=>{
             const token = await AsyncStorage.getItem('token');
+            const userJSON = await AsyncStorage.getItem('user');
             if (token) {
                 const user = jwt_decode(token)
                 setToken(token)
-                setUser(user)
+                setUser(JSON.parse(userJSON))
             }
             setLoading(false)
         })()
@@ -32,7 +33,11 @@ export default function AuthProvider({ children }) {
     }
 
     const updateUser = async (update)=>{
-        setUser({...user, ...update})
+        const userJSON = await AsyncStorage.getItem('user');
+        const user = JSON.parse(userJSON)
+        const newUser = {...user, ...update}
+        setUser(newUser)
+        await AsyncStorage.setItem('user', JSON.stringify(newUser));
     }
 
     const value = {
@@ -42,7 +47,7 @@ export default function AuthProvider({ children }) {
         updateUser
     }
 
-    if (loading) return <Loading/>
+    if (loading) return <Loading fullScreen/>
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
   }

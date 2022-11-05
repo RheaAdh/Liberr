@@ -8,6 +8,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { heightInPercent } from '../utils/utilities'
 import WithGradientPage from './WithGradientPage';
 import api from '../utils/api.service'
+import Button from '../components/Button';
 
 const tick = require('../assets/icons/check.png')
 const tickWhite = require('../assets/icons/check_white.png')
@@ -16,6 +17,7 @@ export default function Subscription({navigation}) {
   const refRBSheet = useRef();
   const isCarousel = useRef(null)
   const [selected, setSelected] = useState()
+  const [selectedPlanIndex, setSelectedPlanIndex] = useState(0)
 
   const [data, setData] = useState([
     {
@@ -121,7 +123,7 @@ export default function Subscription({navigation}) {
       <RBSheet
           ref={refRBSheet}
           closeOnDragDown={true}
-          height={heightInPercent(65)}
+          height={heightInPercent(35)}
           customStyles={{
             container: {
               borderRadius: 12,
@@ -132,9 +134,30 @@ export default function Subscription({navigation}) {
           }}
         >
 <Styled.subscription>
-<Styled.subscriptionTop>
   <Styled.subscriptionText>SUBSCRIPTION DETAILS</Styled.subscriptionText>
+  <Styled.subscriptionTop>
+  <Styled.subscriptionPrice>₹ {data[0].plans[selectedPlanIndex].price}</Styled.subscriptionPrice>
+  <Styled.subscriptionButtons>
+  <Styled.subscriptionButton>
+  <Styled.subscriptionButtonText>
+    1 Month
+    </Styled.subscriptionButtonText>
+    </Styled.subscriptionButton>
+    <Styled.subscriptionButton>
+  <Styled.subscriptionButtonText>
+  3 Months
+    </Styled.subscriptionButtonText>
+    </Styled.subscriptionButton>
+    <Styled.subscriptionButton>
+  <Styled.subscriptionButtonText>
+  5 Months
+    </Styled.subscriptionButtonText>
+    </Styled.subscriptionButton>
+  </Styled.subscriptionButtons>
   </Styled.subscriptionTop>
+  <Styled.subscriptionBottom>
+    <Button text='Subscribe now'/>
+  </Styled.subscriptionBottom>
 </Styled.subscription>
         </RBSheet>
 		  {data.map((sub,i)=> <TouchableWithoutFeedback onPress={()=>{
@@ -260,13 +283,39 @@ const Styled = {
   `,
   subscription: styled.View`
     padding: 35px 20px;
+    justify-content: space-between;
   `,
+  subscriptionButtons: styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  `,
+  subscriptionButton: styled.View`
+    border: 1px solid #333;
+    padding: 10px 15px;
+    margin: 0 1px;
+    border-radius: 3px;
+  `,
+  subscriptionButtonText: styled.Text``,
   subscriptionTop: styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`,
+subscriptionBottom: styled.View`
+margin-top: 35px;
 `,
   subscriptionText: styled.Text`
     font-family: 'heebo-700';
     color: #701fad;
     font-size: 17;
   `,
+  subscriptionPrice: styled.Text`
+  color: #636363;
+  font-family: 'heebo-500';
+  font-size: 30;
+  margin-top: 10px;
+`,
 };
 

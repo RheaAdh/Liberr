@@ -17,20 +17,20 @@ export default function Profile() {
         <Styled.stats>
 					<div>
 						<p style={{letterSpacing: '2px', margin: 0}}>Borrowed</p>
-						<h2 style={{ color: '#800CDA', margin: 0 }}>{user.borrowedCount} Books</h2>
+						<h2 style={{ color: '#800CDA', margin: 0 }}>{user.borrowedCount || 0} Books</h2>
 					</div>
 					<div>
 						<p style={{letterSpacing: '2px', margin: 0}}>Lent</p>
-						<h2 style={{ color: '#800CDA', margin: 0 }}>{user.toLend.length} Books</h2>
+						<h2 style={{ color: '#800CDA', margin: 0 }}>{user.toLend?.length || 0} Books</h2>
 					</div>
 					<div>
 						<p style={{letterSpacing: '2px', margin: 0}}>On Shelf</p>
-						<h2 style={{ color: '#800CDA', margin: 0 }}>{user.borrowed.length + user.toLend.length} Books</h2>
+						<h2 style={{ color: '#800CDA', margin: 0 }}>{user.borrowed?.length + user.toLend?.length || 0} Books</h2>
 					</div>
 				</Styled.stats>
 				<Styled.donated>
 					<p style={{margin: 0}}>Donated</p>
-					<p style={{ margin: 0, background: "rgba(255, 255, 255, 0.32)", color: "#42086F", padding: '5px 10px', borderRadius: 20 }}>{user.donated.length} books</p>
+					<p style={{ margin: 0, background: "rgba(255, 255, 255, 0.32)", color: "#42086F", padding: '5px 10px', borderRadius: 20 }}>{user.donated?.length || 0} books</p>
 				</Styled.donated>
         <Styled.linksArea>
           <ProfileLinks text={'View Previously Borrowed'}/>
@@ -54,7 +54,7 @@ const Styled = {
     padding-horizontal: 20px;
   `,
   stats: styled.View`
-		width: ${widthInPercent(90)}
+		width: ${widthInPercent(90)};
 		flex-direction: row;
 		justify-content: space-between;
 	`,
