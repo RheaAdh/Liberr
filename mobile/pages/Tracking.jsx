@@ -4,6 +4,7 @@ import Loading from '../components/Loading';
 import WithGradientPage from './WithGradientPage';
 
 export default function Tracking() {
+
   return (
     <WithGradientPage>
       <Styled.container>

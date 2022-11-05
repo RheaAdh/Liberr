@@ -9,6 +9,7 @@ import ProfileLinks from '../components/ProfileLinks';
 export default function Profile() {
 
   const user = useAuth().user;
+  console.log(user)
 
   return (
     <WithGradientPage isProfile={true}>

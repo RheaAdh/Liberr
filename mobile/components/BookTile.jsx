@@ -15,12 +15,14 @@ export default function BookTile({
 	copies
 }) {
 	return (
+		<Styled.bookTile>
 		<Styled.container>
 			<Styled.bookImage source={imageLink}/>
 			<Styled.bookInfo>
 				<Styled.genre>
-					<Badge text={genre} backgroundColor={"#404040"}/>
-					{copies.length === 1 && <Badge text={'Unique Copy'} backgroundColor={"#810CDD"}/>}
+					{!isBorrowedShelf && isBooksPage && <Badge text={genre} backgroundColor={"#404040"}/>}
+					{!isBorrowedShelf && copies.length === 1 && <Badge text={'Unique Copy'} backgroundColor={"#810CDD"}/>}
+					{isBorrowedShelf && <Badge text={'Borrowed'} backgroundColor={"#810CDD"}/>}
 				</Styled.genre>
 				<Styled.name>{name}</Styled.name>
 				<Styled.author>{authors[0]}</Styled.author>
@@ -30,23 +32,34 @@ export default function BookTile({
 						<BookMetaData dataKey={"BIND"} value={copies[0].isPaperBack ? "Paperback Edition" : "Hardcover Edition"}/>
 						<BookMetaData dataKey={"ISBN"} value={copies[0]._id}/>
 					</Styled.data>
-					<Styled.get>
-						<div style={{ 
-							display: 'flex', 
-							flexDirection: 'column', 
-							alignItems: 'center', 
-							border: '1px solid #DBDBDB', 
-							padding: '5px',
-							borderRadius: 5
-							}}
-						>
-							<Styled.getBook source={getLiberr}></Styled.getBook>
-							<p style={{margin: 0, fontSize: "0.7rem", marginTop: '1px', color: '#810CDD'}}>GET</p>
-						</div>
-					</Styled.get>
+					{
+						isBooksPage && !isBorrowedShelf && !isLentShelf &&
+						<Styled.get>
+							<div style={{ 
+								display: 'flex', 
+								flexDirection: 'column', 
+								alignItems: 'center', 
+								border: '1px solid #DBDBDB', 
+								padding: '5px',
+								borderRadius: 5
+								}}
+							>
+								<Styled.getBook source={getLiberr}></Styled.getBook>
+								<p style={{margin: 0, fontSize: "0.7rem", marginTop: '1px', color: '#810CDD'}}>GET</p>
+							</div>
+						</Styled.get>
+					}
 				</Styled.meta>
 			</Styled.bookInfo>
 		</Styled.container>
+		{
+			!isBooksPage && isBorrowedShelf && !isLentShelf && 
+			<Styled.buttons>
+				<Styled.markAsRead>Mark As Read</Styled.markAsRead>
+				<Styled.reportLost>Report Lost</Styled.reportLost>
+			</Styled.buttons>
+		}
+		</Styled.bookTile>
 	)
 }
 
@@ -54,6 +67,10 @@ const Styled = {
 	container: styled(SafeAreaView)`
 		flexDirection: row;
   	`,
+	bookTile: styled.View`
+		flex-direction: column;
+		margin-top: 7px;
+	`,
 	bookImage: styled.Image`
 		width: 100px;
 		height: 150px;
@@ -94,6 +111,29 @@ const Styled = {
 	getBook: styled.Image`
 		height: 32px;
 		width: 45px;
+	`,
+	buttons: styled.View`
+		flex-direction: row;
+		justify-content: center;
+		gap: 5px;
+		color: white;
+		margin-top: 5px;
+	`,
+	markAsRead: styled.TouchableOpacity`
+		background: #232323;
+		width: 50%;
+		padding: 10px 5px;
+		text-align: center;
+		border-radius: 5px;
+		font-size: 0.9rem;
+	`,
+	reportLost: styled.TouchableOpacity`
+		background: #646464;
+		width: 50%;
+		padding: 10px 5px;
+		text-align: center;
+		border-radius: 5px;
+		font-size: 0.9rem;
 	`
 
-}
+} 

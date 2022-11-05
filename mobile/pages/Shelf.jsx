@@ -19,9 +19,9 @@ export default function Shelf() {
   async function fetchBorrowedData () {
     try {
       setLoading(true);
+      setBooks([])
       const res = await api.get('/shelf/getBorrowed', {'x-auth-token' : auth.token});
       setBooks(res.data.borrowed);
-      console.log(res.data);
       setLoading(false);
     } catch(err) {
         console.log(err);
@@ -36,9 +36,9 @@ export default function Shelf() {
   async function fetchToLendData () {
     try {
       setLoading(true);
+      setBooks([])
       const res = await api.get('/shelf/getToLend', {'x-auth-token' : auth.token});
-      setBooks(res.data.borrowed);
-      console.log(res.data);
+      setBooks(res.data.toLend);
       setLoading(false);
     } catch(err) {
         console.log(err);
@@ -51,20 +51,16 @@ export default function Shelf() {
   }
 
   useEffect(async () => {
-    // fetchData(); 
-    }, [])
+    if (borrowedSelected)
+      fetchBorrowedData();
+    else
+      fetchToLendData();
+    }, [borrowedSelected])
 
     if (loading) return <Loading />
   return (
     <WithGradientPage>
       <Styled.container>
-        <Styled.list>
-        {
-          books.length > 0 && books.map((item) => {
-            return <BookTile {...item} isBooksPage={true} />
-          })
-        }
-        </Styled.list>
       <Styled.switch>
         <TouchableOpacity onPress={()=>setBorrowedSelected(true)}>
         <Styled.heading selected={borrowedSelected}>Borrowed Shelf</Styled.heading>
@@ -74,6 +70,14 @@ export default function Shelf() {
       <Styled.heading selected={!borrowedSelected}>Lending Shelf</Styled.heading>
       </TouchableOpacity>
       </Styled.switch>
+      <Styled.list>
+			{
+				books.length > 0 && books.map((item, index) => {
+					if (item.bookId !== null)
+            return <BookTile {...item.bookId} isBooksPage={false} isBorrowedShelf={true} />
+				})
+			}
+			</Styled.list>
       </Styled.container>
     </WithGradientPage>
   );
@@ -101,7 +105,7 @@ const Styled = {
 `,
   heading: styled.Text`
     color: #ADADAD;
-    font-size: 19;
+    font-size: 19px;
     margin: 0 10px;
     font-family: 'heebo-500';
 
