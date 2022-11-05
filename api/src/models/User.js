@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const geocoder = require('../utils/geocoder');
 const userSchema = new mongoose.Schema(
     {
         name: {
@@ -15,35 +15,21 @@ const userSchema = new mongoose.Schema(
             required: true,
         },
         address: {
-            houseNumber: {
+            type: String,
+        },
+        location: {
+            type: {
                 type: String,
+                enum: ['Point'],
             },
-            streetName: {
-                type: String,
+            coordinates: {
+                type: [Number],
+                index: '2dsphere',
             },
-            locality: {
-                type: String,
-            },
+            formattedAddress: String,
             city: {
                 type: String,
             },
-            pin: {
-                type: String,
-            },
-            state: {
-                type: String,
-            },
-            country: {
-                type: String,
-            },
-            // location: {
-            //     latitude: {
-            //         type: String,
-            //     },
-            //     longitude: {
-            //         type: String,
-            //     },
-            // },
         },
         subscriptionType: {
             type: mongoose.Schema.Types.ObjectId,
@@ -59,10 +45,6 @@ const userSchema = new mongoose.Schema(
                 ref: 'Order',
             },
         ],
-        donationPoints: {
-            type: Number,
-            default: 1,
-        },
         borrowedCount: {
             type: Number,
             default: 0,
@@ -98,4 +80,23 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+userSchema.index({ location: '2dsphere' });
+
+//GeoCoder create Location
+userSchema.pre('save', async function (next) {
+    if (!this.address) return;
+    const loc = await geocoder.geocode(this.address);
+    // console.log(loc)
+    this.location = {
+        type: 'Point',
+        coordinates: [loc[0].longitude, loc[0].latitude],
+        formattedAddress: loc[0].formattedAddress,
+        city: loc[0].city,
+    };
+
+    //Not saving user entered address rather storing formatted address
+    // this.address = undefined;
+    next();
+});
 module.exports = mongoose.model('User', userSchema);

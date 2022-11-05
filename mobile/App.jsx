@@ -8,6 +8,7 @@ import { useFonts } from 'expo-font';
 import { Heebo_400Regular, Heebo_500Medium, Heebo_700Bold } from '@expo-google-fonts/heebo'
 import { FiraSans_400Regular, FiraSans_500Medium, FiraSans_700Bold } from '@expo-google-fonts/fira-sans'
 import * as SplashScreen from 'expo-splash-screen';
+import AuthProvider from './context/AuthProvider'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -29,7 +30,9 @@ export default function App() {
   
   return (
     <NavigationContainer>
-      <Router/>
+      <AuthProvider>
+        <Router/>
+      </AuthProvider>
       <Toast autoHide visibilityTime={2000} position='bottom' config={toastConfig} />
     </NavigationContainer>
   );

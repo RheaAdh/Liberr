@@ -12,13 +12,8 @@ export const addSubscription = route(async (req, res) => {
     // don't forget to wrap function in route()
     const { name, price, numberOfMonths, maxBorrowCount, minDonateCount } =
         req.body;
-    const subscription = new Subscription({
-        name,
-        price,
-        numberOfMonths,
-        maxBorrowCount,
-        minDonateCount,
-    });
+
+    const subscription = new Subscription(req.body);
     await subscription.save();
     return res.send({ success: true, data: subscription, msg: 'Saved' });
 });
