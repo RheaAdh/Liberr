@@ -31,10 +31,15 @@ export default function AuthProvider({ children }) {
         setUser(user)
     }
 
+    const updateUser = async (update)=>{
+        setUser({...user, ...update})
+    }
+
     const value = {
         user,
         login,
-        token
+        token,
+        updateUser
     }
 
     if (loading) return <Loading/>

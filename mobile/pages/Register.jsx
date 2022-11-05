@@ -19,6 +19,7 @@ export default function Register({navigation}) {
   const [loading, setLoading] = useState(false)
   const auth = useAuth()
 
+
   const handleSubmit = async () => {
     if (!name.value || !email.value || !password.value || !confirmPassword.value){
         Toast.show({
@@ -48,12 +49,12 @@ export default function Register({navigation}) {
             email: email.value,
             password: password.value
         })
-        setLoading(false);
-        navigation.navigate('AddressForm', {
-            fromRegister:true,
-            email: email.value,
-            password: password.value
-        })
+      const token = await api.post('/auth/login', {
+          email: email.value,
+          password: password.value,
+      })
+      setLoading(false);
+    await auth.login(token)
     }
     catch(err){
         console.log(err);

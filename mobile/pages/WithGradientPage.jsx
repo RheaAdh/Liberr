@@ -121,7 +121,17 @@ export default function WithGradientPage(props) {
 						<h1 style={{margin: '-5px 0px'}}>{welcome.toUpperCase()}</h1>
 					</Styled.wish>
 				}
-				{!props?.isProfile && <Styled.addBook>Add Book</Styled.addBook>}
+				{!props?.isProfile && <TouchableOpacity onPress={()=>{
+					if (user.address) refRBSheet.current.open()
+					else props.navigation.navigate('AddressForm', {
+						callback: ()=>{
+							props.navigation.navigate('Subscription')
+							refRBSheet.current.open()
+						}
+					})
+				}}>
+					<Styled.addBook>Add Book</Styled.addBook>
+					</TouchableOpacity>}
 			</Styled.header>
 			{props.children}
 		</Styled.container>
