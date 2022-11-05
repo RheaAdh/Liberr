@@ -8,8 +8,7 @@ export default function Router() {
 
   return (
     <SafeAreaProvider>
-      {/* {auth.user ? <HomeStack /> : <AuthStack />} */}
-      <HomeStack />
+      {auth.user ? <HomeStack /> : <AuthStack />}
     </SafeAreaProvider>
   );
 }

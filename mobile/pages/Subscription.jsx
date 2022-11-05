@@ -8,9 +8,9 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { heightInPercent } from '../utils/utilities'
 import WithGradientPage from './WithGradientPage';
+const tick = require('../assets/icons/check.png')
 
-
- export default function Subscription() {
+export default function Subscription() {
   const refRBSheet = useRef();
 
   const [data, setData] = useState([
@@ -131,19 +131,29 @@ import WithGradientPage from './WithGradientPage';
   <Styled.subscriptionText>SUBSCRIPTION DETAILS</Styled.subscriptionText>
 </Styled.subscription>
         </RBSheet>
-		  {data.map((sub)=> <TouchableWithoutFeedback onPress={()=>refRBSheet.current.open()}><Styled.card >
-        <Styled.cardLeft>
+		  {data.map((sub,i)=> <TouchableWithoutFeedback onPress={()=>refRBSheet.current.open()}><Styled.card middle={i===1}>
+        <Styled.cardLeft middle>
           <Styled.cardLeftTextTop>RUPEES</Styled.cardLeftTextTop>
           <Styled.cardLeftTextMiddle>{sub.plans[0].price}</Styled.cardLeftTextMiddle>
           <Styled.cardLeftTextBottom>PER MONTH</Styled.cardLeftTextBottom>
         </Styled.cardLeft>
-        <Styled.cardMiddle>
-
-        </Styled.cardMiddle>
+        <Styled.cardMiddle></Styled.cardMiddle>
         <Styled.cardRight>
         <Styled.cardRightHeading>
           {sub.name}
         </Styled.cardRightHeading>
+        <Styled.cardRightBenifit>
+          <Styled.tick source={tick} />
+        <Styled.cardRightBenifitText>
+          {"Access to all books"}
+        </Styled.cardRightBenifitText>
+        </Styled.cardRightBenifit>
+        <Styled.cardRightBenifit>
+        <Styled.cardRightBenifitText>
+        <Styled.tick source={tick} />
+          {sub.maxBorrowCount} books per month
+        </Styled.cardRightBenifitText>
+        </Styled.cardRightBenifit>
         </Styled.cardRight>
       </Styled.card>
       </TouchableWithoutFeedback>
@@ -166,20 +176,28 @@ const Styled = {
     border-radius: 5px;
     flex-direction: row;
     align-items: center;
+
+    ${(props)=> props.middle && `
+    background-color: #810CDD;
+    margin: 20px;
+    height: 120px;
+    `}
   `,
   cardMiddle: styled.View`
     height:100%;
     width: 2px;
     background-color: #42086F;
     align-self: center;
-    margin: 0 20px;
+    margin: -1px 20px;
     opacity: 0.25;
 `,
   cardLeft: styled.View`
-    text-align: center
+    text-align: center;
+    font-family: 'heebo-500';
+    color: #636363;
   `,
   cardLeftTextTop: styled.View`
-    font-size: 12;
+    font-size: 11;
   `,
   cardLeftTextMiddle: styled.View`
     margin: 3px 0;
@@ -187,14 +205,31 @@ const Styled = {
     letter-spacing: 2px;
   `,
   cardLeftTextBottom: styled.View`
-    font-size: 12;
+    font-size: 11;
   `,
   cardRight: styled.View`
     
   `,
+  cardRightBenifit: styled.View`
+      color: #222;
+      font-size: 14;
+      flex-direction: row;
+      align-items: center;
+    `,
+    tick: styled.Image`
+      width: 10px;
+      height: 10px;
+      margin-right: 4px;
+    `,
+    cardRightBenifitText: styled.Text`
+      color: #222;
+      font-size: 14;
+    `,
   cardRightHeading: styled.Text`
     font-family: 'heebo-700';
     color: #701fad;
+    font-size: 15;
+    margin-bottom: 5px;
   `,
   subscription: styled.View`
     padding: 35px 20px;
