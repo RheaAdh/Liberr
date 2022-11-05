@@ -51,7 +51,7 @@ export default function Shelf() {
   }
 
   useEffect(async () => {
-    fetchData(); 
+    // fetchData(); 
     }, [])
 
     if (loading) return <Loading />
