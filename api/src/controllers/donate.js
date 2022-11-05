@@ -16,6 +16,7 @@ exports.donateBook = async(req,res)=>{
                 presentOwner:req.user,
                 isPaperBack:req.body.isPaperBack,
                 publisher:bookdata.data.items[0].volumeInfo.publisher,
+                condition:req.body.condition,
                 imageLink : `https://covers.openlibrary.org/b/isbn/${req.body.isbn}-L.jpg`
             })
             // console.log(bookCopy)
@@ -63,6 +64,7 @@ exports.replaceLostBook = async(req,res)=>{
                 presentOwner:req.user,
                 isPaperBack:req.body.isPaperBack,
                 publisher:bookdata.data.items[0].volumeInfo.publisher,
+                condition:req.body.condition,
                 imageLink : `https://covers.openlibrary.org/b/isbn/${newIsbn}-L.jpg`});
             const book = await Book.findOneAndUpdate({name:bookdata.data.items[0].volumeInfo.title},{
                     $push:{copies:newIsbn}
