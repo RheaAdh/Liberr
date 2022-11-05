@@ -143,3 +143,11 @@ export const markAsRead = route(async (req, res) => {
     await user.save();
     return res.send({ success: true, data: user });
 });
+
+export const getBookFromCopy = route(async (req, res) => {
+    // don't forget to wrap function in route()
+    const copyId = req.body.copyId;
+    const copy = await Copy.findOne({ _id: copyId });
+    const book = await Book.findOne({ _id: copy.bookId });
+    return res.send({ success: true, data: book });
+});
