@@ -55,19 +55,19 @@ const userSchema = new mongoose.Schema(
         },
         borrowed: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: 'Copy',
             },
         ],
         toLend: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: 'Copy',
             },
         ],
         donated: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 ref: 'Copy',
             },
         ],

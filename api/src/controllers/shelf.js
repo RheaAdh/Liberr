@@ -68,13 +68,15 @@ export const getToLend = route(async (req, res) => {
 
 export const markAsRead = route(async (req, res) => {
     // don't forget to wrap function in route()
-    const copyid = req.body.copyId;
-
-    const user = await User.findOne({ email: req.user.email });
-    const copy = await Copy.findById(copyId);
+    const copy = await Copy.findById(req.body.copyId);
     copy.readingStatus.isCompleted = true;
     copy.readingStatus.dueDate = null;
+    copy.isOrdered = false;
     await copy.save();
-
+    const user = await User.findOne({ email: req.user.email });
+    user.toLend.push(copy._id);
+    await user.save();
+    user.borrowed.remove(copy._id);
+    await user.save();
     return res.send({ success: true, data: user });
 });
