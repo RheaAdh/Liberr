@@ -2,11 +2,11 @@ import { route, HTTPError } from '../utils/utilities';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
 import moment from 'moment';
-export const allSubscriptions = route(async (req, res) => {
+export const allSubscriptions = async (req, res) => {
     // don't forget to wrap function in route()
     const subscriptions = await Subscription.find();
     return res.send({ success: true, data: subscriptions });
-});
+};
 
 export const addSubscription = route(async (req, res) => {
     // don't forget to wrap function in route()

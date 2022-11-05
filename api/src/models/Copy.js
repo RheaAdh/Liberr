@@ -9,11 +9,11 @@ const copySchema = new mongoose.Schema(
         },
         condition: {
             type: String,
-            enum: ['VERY GOOD', 'GOOD', 'BAD', 'VERY_BAD'],
+            enum: ['VERY GOOD', 'GOOD', 'BAD', 'VERY BAD'],
         },
-        imageLink:{
-            type:String,
-            default:""
+        imageLink: {
+            type: String,
+            default: '',
         },
         presentOwner: {
             type: mongoose.Schema.Types.ObjectId,
