@@ -8,7 +8,7 @@ const copySchema = new mongoose.Schema(
             unique: true,
         },
         bookId: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Book',
         },
         condition: {

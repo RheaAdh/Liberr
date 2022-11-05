@@ -6,6 +6,7 @@ import Copy from '../models/Copy';
 var dist = require('geo-distance-js');
 const geolib = require('geolib');
 import getDistance from 'geolib/es/getDistance';
+import Subscription from '../models/Subscription';
 export const placeOrder = route(async (req, res) => {
     // don't forget to wrap function in route()
 
@@ -13,7 +14,25 @@ export const placeOrder = route(async (req, res) => {
     if (user.blocked.isBlocked) {
         return res.send({
             success: false,
-            msg: 'Account blocked due to ' + user.blocked.isBlocked.reason,
+            msg: 'Account blocked due to ' + user.blocked.reason,
+        });
+    }
+
+    ///chk if subss
+    if (!user.subscriptionType) {
+        return res.status(400).json({ error: 'not subscribed' });
+    }
+
+    //chk duedate of subs before place order
+
+    //chk if u can place order or not because of plan stuff
+    let subscriptionId = user.subscriptionType;
+    const sub = await Subscription.findOne({ _id: subscriptionId });
+
+    if (user.borrowedCount >= sub.maxBorrowCount) {
+        return res.status(400).json({
+            success: false,
+            error: 'You cannot place an order youve crossed your monthly limit.',
         });
     }
     const { bookId, bookCondition } = req.body;
@@ -113,7 +132,7 @@ export const getBorrowed = route(async (req, res) => {
     // don't forget to wrap function in route()
 
     const user = await User.findOne({ email: req.user.email }).populate(
-        'borrowed'
+        'borrowed bookId'
     );
 
     return res.send({ success: true, data: user });
@@ -123,7 +142,7 @@ export const getToLend = route(async (req, res) => {
     // don't forget to wrap function in route()
 
     const user = await User.findOne({ email: req.user.email }).populate(
-        'toLend'
+        'toLend bookId'
     );
 
     return res.send({ success: true, data: user });
