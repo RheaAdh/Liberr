@@ -14,11 +14,11 @@ export default function PreviousBooks({borrowed, backToProfile}) {
     useEffect(() => {
         (async ()=>{
             try {
-                const res = await api.get('/profile/orders', {
-                    'x-auth-token': auth.token
-                })
-                console.log(res);
-                setData(res.data.map((data)=>data.isbn))
+                // const res = await api.get('/profile/orders', {
+                //     'x-auth-token': auth.token
+                // })
+                // console.log(res);
+                // setData(res.data.map((data)=>data.isbn))
             }
             catch(err){
                 console.log(err);

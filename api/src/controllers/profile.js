@@ -4,8 +4,13 @@ import User from '../models/User';
 
 export const getOrders = route(async (req, res) => {
     const orders = await Order.find({ toUser: req.user._id })
-        .populate('fromUser toUser isbn')
+        .populate('fromUser toUser')
+        .populate({path:'isbn',model:'Copy',populate:{
+            path:'bookId',
+            model:'Book'
+        }})
         .sort('-timestamp');
+        
     return res.send({ success: true, data: orders });
 });
 

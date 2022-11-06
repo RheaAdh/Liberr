@@ -1,6 +1,7 @@
 var axios = require('axios');
 var Book = require('../models/Book');
 const Copy = require('../models/Copy');
+const User = require('../models/User');
 const { copy } = require('../routes/auth');
 
 exports.donateBook = async (req, res) => {
@@ -23,6 +24,10 @@ exports.donateBook = async (req, res) => {
         condition: req.body.condition,
         imageLink: `https://covers.openlibrary.org/b/isbn/${req.body.isbn}-L.jpg`,
       });
+
+      const user = await User.findOne({ _id: req.user });
+      user.toLend.push(req.body.isbn);
+      await user.save();
 
       if (bookExists) {
         const book = await Book.findOne({

@@ -50,7 +50,6 @@ const handleOrderBook = async (id)=>{
 		}, {
 			'x-auth-token': auth.token
 		})
-		console.log(res);
 		Toast.show({
 			type: 'success',
 			text1: 'Book order placed!',

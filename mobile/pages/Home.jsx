@@ -17,8 +17,8 @@ export default function Home() {
   return (
     <Styled.container>
       {/* <Loading /> */}
-      <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName={"Profile"} tabBar={props => <TabBar {...props} />}>
-        <Tab.Screen name="Tracking" component={WithGradientPage} />
+      <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName={"Books"} tabBar={props => <TabBar {...props} />}>
+        <Tab.Screen name="Tracking" component={Tracking} />
         <Tab.Screen name="Subscription" component={Subscription} />
         <Tab.Screen name="Books" component={Books} />
         <Tab.Screen name="Shelf" component={Shelf} />
