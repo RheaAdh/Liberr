@@ -43,6 +43,9 @@ export default function WithGradientPage(props) {
 			)
 			
 			if (res.msg==="Invalid isbn") {
+				refRBSheet.current.close();
+				bookISBN.handleReset()
+				genre.handleReset()
 				Toast.show({
 					type: 'error',
 					text1: 'Invalid ISBN',

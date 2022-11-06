@@ -50,7 +50,7 @@ export default function Shelf({navigation}) {
     }
   }
 
-  useEffect(async () => {
+  useEffect( () => {
     if (borrowedSelected)
       fetchBorrowedData();
     else

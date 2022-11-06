@@ -26,7 +26,7 @@ export default function PreviousBooks({borrowed, backToProfile}) {
         })()
     }, [])
 
-    if (!data) return <Loading fullScreen/>
+    // if (!data) return <Loading fullScreen/>
     return (
         <Styled.container>
             <Styled.top>
@@ -38,7 +38,7 @@ export default function PreviousBooks({borrowed, backToProfile}) {
                </TouchableWithoutFeedback>
             </Styled.top>
             <Styled.list>
-                {data && data.map((data)=> <BookTile isLentShelf {...data}/>)}
+                {/* {data && data.map((data)=> <BookTile isLentShelf {...data}/>)} */}
             </Styled.list>
         </Styled.container>
     )

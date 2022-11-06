@@ -16,6 +16,7 @@ export default function BookTile({
 	copies,
 	placeOrder
 }) {
+
 	return (
 		<Styled.bookTile>
 		<Styled.container>
