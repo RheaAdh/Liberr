@@ -10,7 +10,12 @@ export default function OrderTile (props) {
 	const acceptBook = async (copyId) => {
 		try {
 			const res = await api.put('/global/receivedBook', { copyId : copyId }, {'x-auth-token': auth.token});
-			console.log(res);
+			if(res.success) {
+				Toast.show({
+					type: 'success',
+					text1: 'Book borrowed!'
+				})
+			}
 		} catch (error) {
 			console.log(error)
 		}
@@ -26,9 +31,11 @@ export default function OrderTile (props) {
         	      <p style={{margin: 0}}>{props.isbn.bookId.authors[0]}</p>
         	    </div>
         	  </div>
-        	  <TouchableWithoutFeedback onPress={() => acceptBook(props.isbn._id)}>
+			  {
+				props.deliveryStatus !== 'DELIVERED_TO_BORROWER' && <TouchableWithoutFeedback onPress={() => acceptBook(props.isbn._id)}>
 				<Styled.accept>Accept</Styled.accept>
 			  </TouchableWithoutFeedback>
+			  }
         	</div>
 		</Styled.orderTile>
 	)
