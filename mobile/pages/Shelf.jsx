@@ -9,7 +9,7 @@ import Toast from 'react-native-toast-message';
 import BookTile from '../components/BookTile';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Shelf() {
+export default function Shelf({navigation}) {
 
   const [loading, setLoading] = useState(true);
   const [borrowedSelected, setBorrowedSelected] = useState(true)
@@ -59,7 +59,7 @@ export default function Shelf() {
 
     if (loading) return <Loading fullScreen={true}/>
   return (
-    <WithGradientPage>
+    <WithGradientPage navigation={navigation}>
       <Styled.container>
       <Styled.switch>
         <TouchableOpacity onPress={()=>setBorrowedSelected(true)}>

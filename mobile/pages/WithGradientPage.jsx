@@ -10,6 +10,7 @@ import useInputState from '../hooks/useInputState'
 import Button from '../components/Button'
 import api from '../utils/api.service';
 import { useAuth } from '../context/AuthProvider';
+import Toast from 'react-native-toast-message';
 
 export default function WithGradientPage(props) {
 	const refRBSheet = useRef();
@@ -40,10 +41,29 @@ export default function WithGradientPage(props) {
 				'x-auth-token': auth.token
 			}
 			)
+			
+			if (res.msg==="Invalid isbn") {
+				Toast.show({
+					type: 'error',
+					text1: 'Invalid ISBN',
+				});
+				return;
+			}
+
+			Toast.show({
+				type: 'success',
+				text1: 'Book added. Thanks!',
+			});
+
 			console.log(res);
+			
+			refRBSheet.current.close();
 		}
 		catch(err){
-			console.log(err);
+			Toast.show({
+				type: 'error',
+				text1: 'Book already exisits in the system',
+			});
 		}
 	}
 
