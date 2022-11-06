@@ -60,6 +60,7 @@ export default function WithGradientPage(props) {
 			refRBSheet.current.close();
 		}
 		catch(err){
+			console.log(err);
 			Toast.show({
 				type: 'error',
 				text1: 'Book already exisits in the system',

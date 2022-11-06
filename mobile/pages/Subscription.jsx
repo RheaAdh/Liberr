@@ -54,11 +54,14 @@ export default function Subscription({navigation}) {
         'x-auth-token': auth.token
       })
 
+      console.log(res);
+
       if (!res.success) {
         Toast.show({
           type: 'error',
-          text1:res.msg
+          text1: res.msg
         })
+      refRBSheet.current.close()
         return;
       }
 
@@ -69,6 +72,7 @@ export default function Subscription({navigation}) {
       refRBSheet.current.close()
     }
     catch(err){
+      console.log(err);
       Toast.show({
         type: 'error',
         text1: 'Something went wrong!'

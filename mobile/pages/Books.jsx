@@ -16,23 +16,24 @@ export default function Books({navigation}) {
   const search = useInputState()
   const auth = useAuth()
 
-  useEffect(async () => {
-	async function fetchData () {
-		try {
-			setLoading(true);
-			const res = await api.get('/books/availableBooks', { crossOrigin: true });
-			setBooks(res);
-			setLoading(false);
-		}
-		catch(err){
-			console.log(err.config);
-			setLoading(false);
-			Toast.show({
-				type: 'error',
-				text1: err.response.data.error,
-			});
-		}
+  async function fetchData () {
+	try {
+		setLoading(true);
+		const res = await api.get('/books/availableBooks', { crossOrigin: true });
+		setBooks(res);
+		setLoading(false);
 	}
+	catch(err){
+		console.log(err.config);
+		setLoading(false);
+		Toast.show({
+			type: 'error',
+			text1: err.response.data.error,
+		});
+	}
+}
+
+  useEffect(async () => {
 	fetchData();
   }, [])
 
