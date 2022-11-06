@@ -5,6 +5,8 @@ import WithGradientPage from './WithGradientPage';
 import {useAuth} from '../context/AuthProvider';
 import { useEffect, useState } from 'react';
 import api from '../utils/api.service';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import OrderTile from '../components/OrderTile';
 
 export default function Tracking({navigation}) {
 
@@ -18,6 +20,7 @@ export default function Tracking({navigation}) {
         setLoading(true)
         const res = await api.get('/profile/orders', { 'x-auth-token': auth.token });
         setOrders(res.data);
+        console.log(res.data);
         setLoading(false);
       } catch (error) {
         console.log(error)
@@ -31,7 +34,13 @@ export default function Tracking({navigation}) {
   return (
     <WithGradientPage navigation={navigation}>
       <Styled.container>
-      <Styled.heading>Tracking</Styled.heading>
+      {<Styled.list>
+        {
+          orders.map((item) => {
+            return <OrderTile {...item} />
+          })
+        }
+      </Styled.list>}
       </Styled.container>
     </WithGradientPage>
   );
@@ -43,4 +52,8 @@ const Styled = {
     padding-top: 100px;
   `,
   heading: styled.Text``,
+  list: styled.View`
+	  padding: 10px;
+	  overflow-y: scroll;
+  `,
 };
