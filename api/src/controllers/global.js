@@ -3,6 +3,9 @@ const Order = require('../models/Order');
 const User = require('../models/User');
 exports.receivedBook = async (req, res) => {
     try {
+        const user = await User.findOne({
+            email: req.user.email,
+        });
         if (user.borrowed.includes(req.body.copyId)) {
             return res.status(400).json({ error: 'book already borrowed' });
         }
@@ -17,9 +20,6 @@ exports.receivedBook = async (req, res) => {
             { isBorrowed: true }
         );
         //add to borrow array
-        const user = await User.findOne({
-            email: req.user.email,
-        });
 
         user.borrowed.push(req.body.copyId);
         user.borrowedCount += 1;
