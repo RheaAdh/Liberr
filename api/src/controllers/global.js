@@ -24,7 +24,7 @@ exports.receivedBook = async (req, res) => {
         user.borrowed.push(req.body.copyId);
         user.borrowedCount += 1;
         await user.save();
-        return res.json(copy);
+        return res.json({ success: true });
     } catch (err) {
         return res.status(500).json({ err: err.toString() });
     }
