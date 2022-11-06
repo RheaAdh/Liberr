@@ -96,7 +96,7 @@ const Styled = {
 		fontWeight: bold;
 	`,
 	author: styled.Text`
-		color: #810CDD
+		color: #810CDD;
 		fontSize: 1rem
 	`,
 	meta: styled.View`

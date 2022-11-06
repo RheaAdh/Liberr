@@ -1,3 +1,4 @@
+import {useState} from 'react'
 import styled from 'styled-components/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Loading from '../components/Loading';
@@ -5,10 +6,19 @@ import WithGradientPage from './WithGradientPage';
 import { widthInPercent } from '../utils/utilities';
 import {useAuth} from '../context/AuthProvider';
 import ProfileLinks from '../components/ProfileLinks';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import PreviousBooks from './PreviousBooks';
 
 export default function Profile({navigation}) {
 
   const user = useAuth().user;
+  const [viewPrevious, setViewPrevious] = useState(null)
+
+  const backToProfile = ()=>{
+    setViewPrevious(null)
+  }
+
+  if (viewPrevious) return <PreviousBooks backToProfile={backToProfile} borrowed={viewPrevious==='borrowed'}/>
 
   return (
     <WithGradientPage navigation={navigation} isProfile={true}>
@@ -33,8 +43,12 @@ export default function Profile({navigation}) {
 					<p style={{ margin: 0, background: "rgba(255, 255, 255, 0.32)", color: "#42086F", padding: '5px 10px', borderRadius: 20 }}>{user.donated?.length || 0} books</p>
 				</Styled.donated>
         <Styled.linksArea>
-          <ProfileLinks text={'View Previously Borrowed'}/>
-          <ProfileLinks text={'View Previously Lent'}/>
+          <TouchableWithoutFeedback onPress={()=>setViewPrevious('borrowed')}>
+            <ProfileLinks text={'View Previously Borrowed'}/>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={()=>setViewPrevious('lent')}>
+            <ProfileLinks text={'View Previously Lent'}/>
+          </TouchableWithoutFeedback>
         </Styled.linksArea>
         <h3 style={{margin: 0, marginTop: '100px', color: '#8C8C8C'}}>MORE</h3>
         <Styled.linksArea>
@@ -73,3 +87,4 @@ const Styled = {
     gap: 4px;
   `
 };
+

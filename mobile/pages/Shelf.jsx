@@ -92,6 +92,7 @@ const Styled = {
   list: styled.View`
 	  padding: 10px;
 	  overflow-y: scroll;
+    height: 450px;
   `,
   switch: styled.View`
     flex-direction: row;
