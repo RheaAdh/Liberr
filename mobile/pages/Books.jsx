@@ -56,15 +56,14 @@ const handleOrderBook = async (id)=>{
 		});
 	}
 	catch(err){
-		console.log(err);
 		Toast.show({
 			type: 'error',
-			text1: 'Something went wrong',
+			text1: err.response.data.error,
 		});
 	}
 }
 
-  if (!books.length) return <Loading fullScreen />
+  if (loading) return <Loading fullScreen />
 
   return (
 	<WithGradientPage navigation={{navigation}}>
@@ -76,10 +75,10 @@ const handleOrderBook = async (id)=>{
 					return <BookTile placeOrder={()=>handleOrderBook(item._id)} {...item} isBooksPage={true} />
 				})
 			}
-			</Styled.list>: 
-			<Styled.empty>
+			</Styled.list>: (search.value && <Styled.empty>
 			<Styled.emptyText>No books match your search :(</Styled.emptyText>
-			</Styled.empty>}
+			</Styled.empty>)
+			}
 		</Styled.container>
 	</WithGradientPage>
   );
